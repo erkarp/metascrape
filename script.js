@@ -14,6 +14,14 @@ module.exports = {
     return arr.push(obj);
   },
 
+  getTitle: function(html) {
+    if (typeof html !== 'string') {
+      return
+    }
+    var matches = html.match(/<title>(.*)<\/title>/);
+    return matches[1];
+  }
+
 /*
 
 3.

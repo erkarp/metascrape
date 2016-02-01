@@ -37,6 +37,11 @@ describe('Scrape', function () {
     scrape.addPage(emptyarr, mockNode);
     expect(emptyarr.length).to.equal(1);
   })
+
+  it('gets a string equal to mockNode.title', function() {
+    var testTitle = scrape.getTitle(mockPage);
+    expect(testTitle).to.equal(mockNode.title);
+  })
   /*
 
   3.
