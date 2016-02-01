@@ -1,7 +1,17 @@
+var http = require('http');
+
 /*
 1.
 getFn - path return html
+*/
 
+function getHTML(link, callback) {
+    return http.get(link, function(response) {
+			return response;
+    });
+}
+
+/*
 2.
 addPage - arr, obj noreturn arr.push(obj)
 

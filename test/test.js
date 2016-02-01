@@ -6,10 +6,35 @@ mocknode = {..}
 mockmeta = [{..}..]
 mocklinks = number
 mocktitle = string
+*/
 
+var fs = require('fs'),
+    expect = require('chai').expect,
+    scrape = require('./../script.js');
+
+var mockPath = './mock-html.html';
+
+var mockPage = fs.readFileSync(require.resolve(mockPath), 'utf-8', function (err, html) {
+        if (err) { return err; }
+        return html.toString();
+    });
+
+beforeEach(function() {
+
+});
+
+
+/*
 1.
-getFnf(mockpath) == mockpage
+getFn(mockpath) == mockpage
+*/
 
+it('should print out html', function () {
+  console.log('page:',mockPage);
+});
+
+
+/*
 2.
 addFn(emptyarr, mocknode)
 emptyarr.length == 1
