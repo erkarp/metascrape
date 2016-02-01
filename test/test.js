@@ -12,49 +12,50 @@ var fs = require('fs'),
     expect = require('chai').expect,
     scrape = require('./../script.js');
 
-var mockPath = './mock-html.html';
+describe('Scrape', function () {
 
-var mockPage = fs.readFileSync(require.resolve(mockPath), 'utf-8', function (err, html) {
-        if (err) { return err; }
-        return html.toString();
-    });
+  beforeEach(function() {
+        emptyarr = [],
+        mockPath = 'mock-html.html',
+        mockNode = {
+          path: mockPath,
+          title: 'Emily Karp | Web developer'
+        };
 
-beforeEach(function() {
+        mockPage = fs.readFileSync(require.resolve('./'+mockPath), 'utf-8', function (err, html) {
+            if (err) { return err; }
+            return html.toString();
+        });
+  });
 
+
+  it('should print out html', function () {
+    console.log('page:',mockPage);
+  });
+
+  it('should add mocknode to emptyarr', function() {
+    scrape.addPage(emptyarr, mockNode);
+    expect(emptyarr.length).to.equal(1);
+  })
+  /*
+
+  3.
+  page = html
+  linkArr = [link...]
+  find(page) == linkArr
+
+  4.
+  getTitle(mockpage) == mocktitle
+
+  5.
+  metadata.alltrue(fn - typeof i == obj)
+
+  6.
+  byId(mockmeta id) == mocknode.id
+
+  7, 8.
+  FROM_USER - mockpath
+    metalist == mockmeta
+
+  */
 });
-
-
-/*
-1.
-getFn(mockpath) == mockpage
-*/
-
-it('should print out html', function () {
-  console.log('page:',mockPage);
-});
-
-
-/*
-2.
-addFn(emptyarr, mocknode)
-emptyarr.length == 1
-
-3.
-page = html
-linkArr = [link...]
-find(page) == linkArr
-
-4.
-getTitle(mockpage) == mocktitle
-
-5.
-metadata.alltrue(fn - typeof i == obj)
-
-6.
-byId(mockmeta id) == mocknode.id
-
-7, 8.
-FROM_USER - mockpath
-  metalist == mockmeta
-
-*/

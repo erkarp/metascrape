@@ -1,19 +1,20 @@
 var http = require('http');
 
-/*
-1.
-getFn - path return html
-*/
-
-function getHTML(link, callback) {
-    return http.get(link, function(response) {
-			return response;
+module.exports = {
+  getHTML: function(link) {
+    return http.get(link, function(e, response) {
+      if (e) {
+        return e
+      }
+  		return response;
     });
-}
+  },
+
+  addPage: function(arr, obj) {
+    return arr.push(obj);
+  },
 
 /*
-2.
-addPage - arr, obj noreturn arr.push(obj)
 
 3.
 find : links w same url, return arr
@@ -37,6 +38,8 @@ meta - path, html, rec=true
 
 8.
 FROM_USER - path
+  validate path
   html = getFn(path)
   meta(path, html)
 */
+}
