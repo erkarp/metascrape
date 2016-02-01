@@ -1,4 +1,5 @@
-var http = require('http');
+var http = require('http'),
+    val = require('validator');
 
 module.exports = {
   getHTML: function(link) {
@@ -20,15 +21,27 @@ module.exports = {
     }
     var matches = html.match(/<title>(.*)<\/title>/);
     return matches[1];
+  },
+
+  getLinks: function(html, url, array) {
+    if (html.length  <= 0 || typeof url !== 'string' || typeof array !== 'object') {
+      return;
+    }
+
+    var r = /href="(.*)" /.exec(html);
+
+    if (r != null && r != undefined) {
+        if (array.indexOf(r[1]) == -1) {
+          array.push(r[1]);
+        }
+        sub   = html.substr(r[1].length);
+        match = this.getLinks(sub, url, array);
+    }
+
+    return array;
   }
 
 /*
-
-3.
-find : links w same url, return arr
-
-4.
-getTitle(html) return title.inner
 
 5.
 metalist - []

@@ -29,28 +29,29 @@ describe('Scrape', function () {
   });
 
 
-  it('should print out html', function () {
-    console.log('page:',mockPage);
+  it('checks that mockPage is a string and longer than 0', function () {
+    expect(mockPage).to.be.a('string');
+    expect(mockPage.length).to.be.above(0);
   });
 
   it('should add mocknode to emptyarr', function() {
     scrape.addPage(emptyarr, mockNode);
     expect(emptyarr.length).to.equal(1);
-  })
+  });
 
   it('gets a string equal to mockNode.title', function() {
     var testTitle = scrape.getTitle(mockPage);
     expect(testTitle).to.equal(mockNode.title);
+  });
+
+  it('prints all <a> hrefs in the page', function() {
+    var links = scrape.getLinks(mockPage, '', []);
+
+    for(var i=0; i < links.length; i++) {
+      console.log(links[i]);
+    }
   })
   /*
-
-  3.
-  page = html
-  linkArr = [link...]
-  find(page) == linkArr
-
-  4.
-  getTitle(mockpage) == mocktitle
 
   5.
   metadata.alltrue(fn - typeof i == obj)
