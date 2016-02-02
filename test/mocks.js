@@ -49,13 +49,21 @@ module.exports = {
     'emilykarp.com',
     'www.emilykarp.com/',
     'http://emilykarp.com',
-    'http:s//emilykarp.com/'
+    'https://emilykarp.com/info',
+    'wd3.emilykarp.com/hello.html'
+  ],
+  validatedAbsolutes: [
+    '',
+    '',
+    '',
+    'info',
+    'hello.html'
   ],
   externalLinks: [
     'terrikarp.com',
     'www.terrikarp.com',
-    'http://terrikarp.com',
-    'http:s//terrikarp.com',
+    'http://terrikarp.com/info.html',
+    'https://terrikarp.com/about',
     'mailto:emilykarp@gmail.com'
   ]
 }

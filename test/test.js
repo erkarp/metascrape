@@ -66,10 +66,12 @@ describe('link mankipulation functions', function() {
 
   it('removeDomainAddress for matchingAbsLinks', function() {
     var links = mock.matchingAbsLinks,
+        valid = mock.validatedAbsolutes,
         url = mock.url;
 
     for (var i=0; i<links.length; i++) {
-      expect(scrape.removeDomainAddress(links[i], url)).to.equal('');
+      var validated = scrape.removeDomainAddress(links[i], url);
+      expect(validated).to.equal(valid[i]);
     }
   });
 
@@ -94,6 +96,16 @@ describe('link validation', function() {
     for (var i=0; i<links.length; i++) {
       var validated = scrape.validateLink(links[i], url);
       expect(validated).to.equal(mock.validatedPaths[i]);
+    }
+  });
+
+  it('for externalLinks', function() {
+    var links = mock.externalLinks,
+        url = mock.url;
+
+    for (var i=0; i<links.length; i++) {
+      var validated = scrape.validateLink(links[i], url);
+      expect(validated).to.equal(undefined);
     }
   })
 })

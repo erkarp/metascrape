@@ -42,7 +42,8 @@ module.exports = {
     var domains = ['.co', '.org', '.net', '.co', '.uk', '.me', '.io'];
 
     if (link.indexOf(url) > -1) {
-      return link.substr(link.indexOf(url) + link.length);
+      var rm = link.substr(0, link.indexOf(url)+url.length+1);
+      return link.replace(rm, '');
     }
 
     for (var i=0; i<domains.length; i++) {
