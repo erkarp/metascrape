@@ -47,6 +47,15 @@ module.exports = {
     return link;
   },
 
+  reduceLinkToPath: function(link) {
+    if (link.indexOf('.') > -1) {
+      var sub = link.substr(link.lastIndexOf(link));
+      var slash = sub.indexOf('/')+1;
+      link = sub.substr(slash);
+    }
+    return link;
+  },
+
   checkLinks: function(links, url) {
     if (typeof links !== 'object' || links.length < 1) {
       return;
@@ -56,12 +65,7 @@ module.exports = {
       if (link.indexOf(url) > -1 || link.indexOf('mailto:') === 0) {
         return;
       }
-      if (link.indexOf('.') > -1) {
-        link = link.substr(link.lastIndexOf('.'));
-        console.log(link);
-        link = link.substr(link.indexOf('/'));
-        console.log(link);
-      }
+      link = removeLinkRelativity(link);
       if (val.isURL(link + '/' + url)) {
         console.log('made:', link + '/' + url + '\n');
         return link;
