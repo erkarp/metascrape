@@ -29,7 +29,7 @@ module.exports = {
     var r = /href="(.*)" /.exec(html);
 
     if (r != null && r != undefined) {
-        if (array.indexOf(r[1]) == -1) {
+        if (array.indexOf(r[1]) == -1 && this.validateLink(r[1], url)) {
           array.push(r[1]);
         }
         sub = html.substr(r[1].length);
