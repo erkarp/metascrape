@@ -22,6 +22,15 @@ describe('Scrape', function () {
           title: 'Emily Karp | Web developer'
         };
 
+        mockLinks = [
+          'favicon.ico',
+          'style.css',
+          'https://www.linkedin.com/in/emilykarp',
+          'http://codepen.io/emilykarp/',
+          'https://github.com/erkarp/',
+          'http://www.webdevelopersstudio.com/'
+        ];
+
         mockPage = fs.readFileSync(require.resolve('./'+mockPath), 'utf-8', function (err, html) {
             if (err) { return err; }
             return html.toString();
@@ -49,6 +58,35 @@ describe('Scrape', function () {
 
     for(var i=0; i < links.length; i++) {
       console.log(links[i]);
+    }
+  });
+
+  it('checks removeLinkRelativity fn', function() {
+    var links = [
+      '../hello',
+      '/link_two',
+      '../../test-link',
+      './anotherTest'
+    ]
+    var validated = [
+      'hello',
+      'link_two',
+      'test-link',
+      'anotherTest'
+    ]
+    for (var i=0; i<links.length; i++) {
+      var val = scrape.removeLinkRelativity(links[i]);
+      expect(val).to.equal(validated[i]);
+    }
+  });
+
+  it('checks that all links are valid as part of current url', function() {
+    var mockUrl = "www.emilykarp.com";
+    var validLinks = scrape.checkLinks(mockLinks, mockUrl);
+    expect(validLinks.length).to.equal(0);
+    console.log('test loop:');
+    for(var i=0; i < validLinks.length; i++) {
+      console.log(validLinks[i]);
     }
   })
   /*

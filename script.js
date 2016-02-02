@@ -34,11 +34,39 @@ module.exports = {
         if (array.indexOf(r[1]) == -1) {
           array.push(r[1]);
         }
-        sub   = html.substr(r[1].length);
+        sub = html.substr(r[1].length);
         match = this.getLinks(sub, url, array);
     }
-
     return array;
+  },
+
+  removeLinkRelativity: function(link) {
+    if (link.charAt(0) === '/' || link.charAt(0) === '.') {
+      link = this.removeLinkRelativity(link.substr(1));
+    }
+    return link;
+  },
+
+  checkLinks: function(links, url) {
+    if (typeof links !== 'object' || links.length < 1) {
+      return;
+    }
+
+    return links.filter(function(link){
+      if (link.indexOf(url) > -1 || link.indexOf('mailto:') === 0) {
+        return;
+      }
+      if (link.indexOf('.') > -1) {
+        link = link.substr(link.lastIndexOf('.'));
+        console.log(link);
+        link = link.substr(link.indexOf('/'));
+        console.log(link);
+      }
+      if (val.isURL(link + '/' + url)) {
+        console.log('made:', link + '/' + url + '\n');
+        return link;
+      }
+    })
   }
 
 /*
