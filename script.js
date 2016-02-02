@@ -49,9 +49,16 @@ module.exports = {
 
   reduceLinkToPath: function(link) {
     if (link.indexOf('.') > -1) {
-      var sub = link.substr(link.lastIndexOf(link));
-      var slash = sub.indexOf('/')+1;
-      link = sub.substr(slash);
+
+      link = link.substr(link.lastIndexOf('.'));
+
+      if (link.indexOf('/') > -1) {
+        
+        return link.substr(link.indexOf('/')+1);
+
+      } else {
+        return '';
+      }
     }
     return link;
   },

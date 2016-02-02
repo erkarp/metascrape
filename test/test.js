@@ -4,19 +4,19 @@ var fs = require('fs'),
     mock = require('./mocks');
 
 
-describe('Scrape', function () {
+describe('checks that', function () {
 
-  it('checks that mock.page is a string and longer than 0', function () {
+  it('mock.page is a string and longer than 0', function () {
     expect(mock.page).to.be.a('string');
     expect(mock.page.length).to.be.above(0);
   });
 
-  it('should add mock.node to emptyarr', function() {
+  it('mock.node is added to emptyarr', function() {
     scrape.addPage(mock.emptyarr, mock.node);
     expect(mock.emptyarr.length).to.equal(1);
   });
 
-  it('gets a string equal to mock.node.title', function() {
+  it('a title is mined that is equal to mock.node.title', function() {
     var testTitle = scrape.getTitle(mock.page);
     expect(testTitle).to.equal(mock.node.title);
   });
@@ -29,7 +29,7 @@ describe('Scrape', function () {
     }
   });
 
-  it('checks removeLinkRelativity fn', function() {
+  it('removeLinkRelativity fn', function() {
     var links = mock.relativePaths,
         valid = mock.validatedPaths;
 
@@ -39,7 +39,7 @@ describe('Scrape', function () {
     }
   });
 
-  it('checks reduceLinkToPath fn', function() {
+  it('reduceLinkToPath fn', function() {
     var links = mock.links,
         valid = mock.linksPaths;
 
@@ -49,7 +49,7 @@ describe('Scrape', function () {
     }
   })
 
-  it('checks that all links are valid as part of current url', function() {
+  it('all links are valid as part of current url', function() {
     var testURL = "www.emilykarp.com";
     var validLinks = scrape.checkLinks(mock.links, testURL);
     expect(validLinks.length).to.equal(0);
