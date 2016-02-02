@@ -53,7 +53,7 @@ module.exports = {
       link = link.substr(link.lastIndexOf('.'));
 
       if (link.indexOf('/') > -1) {
-        
+
         return link.substr(link.indexOf('/')+1);
 
       } else {
@@ -61,6 +61,15 @@ module.exports = {
       }
     }
     return link;
+  },
+
+  checkLinkExtension: function(link) {
+    var extensions = ['.html', '.txt', '.pdf'];
+    for (var i=0; i<extensions.length; i++) {
+      if (link.indexOf(extensions[i]) > -1) {
+        return link;
+      }
+    }
   },
 
   checkLinks: function(links, url) {

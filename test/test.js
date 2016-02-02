@@ -47,6 +47,11 @@ describe('checks that', function () {
       var part = scrape.reduceLinkToPath(links[i]);
       expect(part).to.equal(valid[i]);
     }
+  });
+
+  it('checkLinkExtension fn', function() {
+    expect(scrape.checkLinkExtension(mock.node.path)).to.be.a('string');
+    expect(scrape.checkLinkExtension(mock.links[2])).to.equal(undefined);
   })
 
   it('all links are valid as part of current url', function() {
