@@ -1,5 +1,4 @@
-var http = require('http'),
-    val = require('validator');
+var http = require('http');
 
 module.exports = {
   getHTML: function(link) {
@@ -27,7 +26,6 @@ module.exports = {
     if (html.length  <= 0 || typeof url !== 'string' || typeof array !== 'object') {
       return;
     }
-
     var r = /href="(.*)" /.exec(html);
 
     if (r != null && r != undefined) {
@@ -40,6 +38,21 @@ module.exports = {
     return array;
   },
 
+  removeDomainAddress: function(link, url) {
+    var domains = ['.co', '.org', '.net', '.co', '.uk', '.me', '.io'];
+
+    if (link.indexOf(url) > -1) {
+      return link.substr(link.indexOf(url) + link.length);
+    }
+
+    for (var i=0; i<domains.length; i++) {
+      if (link.indexOf(domains[i]) > -1) {
+        return;
+      }
+    }
+    return link;
+  },
+
   removeLinkRelativity: function(link) {
     if (link.charAt(0) === '/' || link.charAt(0) === '.') {
       link = this.removeLinkRelativity(link.substr(1));
@@ -49,11 +62,9 @@ module.exports = {
 
   reduceLinkToPath: function(link) {
     if (link.indexOf('.') > -1) {
-
       link = link.substr(link.lastIndexOf('.'));
 
       if (link.indexOf('/') > -1) {
-
         return link.substr(link.indexOf('/')+1);
 
       } else {
@@ -72,21 +83,15 @@ module.exports = {
     }
   },
 
-  checkLinks: function(links, url) {
-    if (typeof links !== 'object' || links.length < 1) {
+  validateLink: function(link, url) {
+    if (link.length < 2 || link.indexOf('mailto:') > -1 ) {
       return;
     }
 
-    return links.filter(function(link){
-      if (link.indexOf(url) > -1 || link.indexOf('mailto:') === 0) {
-        return;
-      }
-      link = removeLinkRelativity(link);
-      if (val.isURL(link + '/' + url)) {
-        console.log('made:', link + '/' + url + '\n');
-        return link;
-      }
-    })
+    link = _this.removeDomainAddress(link, url);
+    if (link) {
+      return _this.removeLinkRelativity(link);
+    }
   }
 
 /*

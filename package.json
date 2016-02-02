@@ -18,8 +18,7 @@
   "license": "ISC",
   "dependencies": {
     "bootstrap": "^3.3.6",
-    "express": "^4.13.4",
-    "validator": "^4.5.2"
+    "express": "^4.13.4"
   },
   "devDependencies": {
     "chai": "^3.5.0",

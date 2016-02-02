@@ -4,6 +4,8 @@ var path = 'mock-html.html';
 module.exports = {
  emptyarr: [],
 
+ url: 'emilykarp.com',
+
  node: {
     path: path,
     title: 'Emily Karp | Web developer'
@@ -42,5 +44,18 @@ module.exports = {
     'link_two',
     'test-link',
     'anotherTest'
+  ],
+  matchingAbsLinks: [
+    'emilykarp.com',
+    'www.emilykarp.com/',
+    'http://emilykarp.com',
+    'http:s//emilykarp.com/'
+  ],
+  externalLinks: [
+    'terrikarp.com',
+    'www.terrikarp.com',
+    'http://terrikarp.com',
+    'http:s//terrikarp.com',
+    'mailto:emilykarp@gmail.com'
   ]
 }

@@ -4,7 +4,7 @@ var fs = require('fs'),
     mock = require('./mocks');
 
 
-describe('checks that', function () {
+describe('html file return and parse', function () {
 
   it('mock.page is a string and longer than 0', function () {
     expect(mock.page).to.be.a('string');
@@ -23,11 +23,12 @@ describe('checks that', function () {
 
   it('prints all <a> hrefs in the page', function() {
     var links = scrape.getLinks(mock.page, '', []);
-
-    for(var i=0; i < links.length; i++) {
-      console.log(links[i]);
-    }
+    expect(links.length).to.be.above(0);
   });
+});
+
+
+describe('link validation', function() {
 
   it('removeLinkRelativity fn', function() {
     var links = mock.relativePaths,
@@ -52,19 +53,28 @@ describe('checks that', function () {
   it('checkLinkExtension fn', function() {
     expect(scrape.checkLinkExtension(mock.node.path)).to.be.a('string');
     expect(scrape.checkLinkExtension(mock.links[2])).to.equal(undefined);
-  })
+  });
 
-  it('all links are valid as part of current url', function() {
-    var testURL = "www.emilykarp.com";
-    var validLinks = scrape.checkLinks(mock.links, testURL);
-    expect(validLinks.length).to.equal(0);
-    console.log('test loop:');
-    for(var i=0; i < validLinks.length; i++) {
-      console.log(validLinks[i]);
+  it('removeDomainAddress for externalLinks', function() {
+    var links = mock.externalLinks,
+        url = mock.url;
+
+    for (var i=0; i<links.length; i++) {
+      expect(scrape.removeDomainAddress(links[i], url)).to.equal(undefined);
     }
-  })
-  /*
+  });
 
+  it('removeDomainAddress for matchingAbsLinks', function() {
+    var links = mock.matchingAbsLinks,
+        url = mock.url;
+
+    for (var i=0; i<links.length; i++) {
+      expect(scrape.removeDomainAddress(links[i], url)).to.equal('');
+    }
+  });
+
+
+  /*
   5.
   metadata.alltrue(fn - typeof i == obj)
 
