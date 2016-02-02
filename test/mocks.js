@@ -2,20 +2,15 @@ var fs = require('fs');
 var path = 'mock-html.html';
 
 module.exports = {
- emptyarr: [],
-
  url: 'emilykarp.com',
-
  node: {
     path: path,
     title: 'Emily Karp | Web developer'
   },
-
  page: fs.readFileSync(require.resolve('./'+path), 'utf-8', function (err, html) {
     if (err) { return err; }
     return html.toString();
   }),
-
 
  links: [
     'favicon.ico',

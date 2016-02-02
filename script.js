@@ -14,7 +14,7 @@ module.exports = {
     return arr.push(obj);
   },
 
-  getTitle: function(html) {
+  title: function(html) {
     if (typeof html !== 'string') {
       return
     }
@@ -22,20 +22,19 @@ module.exports = {
     return matches[1];
   },
 
-  getLinks: function(html, url, array) {
-    if (html.length  <= 0 || typeof url !== 'string' || typeof array !== 'object') {
+  links: function(html, url) {
+    if (html.length  <= 0 || typeof url !== 'string') {
       return;
     }
     var r = /href="(.*)" /.exec(html);
 
     if (r != null && r != undefined) {
-        if (array.indexOf(r[1]) == -1 && this.validateLink(r[1], url)) {
-          array.push(r[1]);
+        if (this.metalist.indexOf(r[1]) == -1 && this.validateLink(r[1], url)) {
+          this.metalist.push(r[1]);
         }
         sub = html.substr(r[1].length);
-        match = this.getLinks(sub, url, array);
+        match = this.links(sub, url);
     }
-    return array;
   },
 
   removeDomainAddress: function(link, url) {
@@ -98,24 +97,9 @@ module.exports = {
       }
     }
   }
+,
 
 /*
-
-5.
-metalist - []
-
-6.
-byId get item by id return item
-
-7.
-meta - path, html, rec=true
-	if !byId(html)
-		addPage(metalist, {path:path,title:getTitle()})
-	if rec
-		arr = find()
-		arr.foreach(g - this link, false)
-
-8.
 FROM_USER - path
   validate path
   html = getFn(path)
