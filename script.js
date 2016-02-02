@@ -76,6 +76,7 @@ module.exports = {
 
   checkLinkExtension: function(link) {
     var extensions = ['.html', '.txt', '.pdf'];
+
     for (var i=0; i<extensions.length; i++) {
       if (link.indexOf(extensions[i]) > -1) {
         return link;
@@ -88,9 +89,12 @@ module.exports = {
       return;
     }
 
-    link = _this.removeDomainAddress(link, url);
+    link = this.removeDomainAddress(link, url);
     if (link) {
-      return _this.removeLinkRelativity(link);
+      link = this.reduceLinkToPath(link);
+      if (link) {
+        return this.removeLinkRelativity(link);
+      }
     }
   }
 

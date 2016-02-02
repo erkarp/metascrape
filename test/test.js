@@ -28,7 +28,7 @@ describe('html file return and parse', function () {
 });
 
 
-describe('link validation', function() {
+describe('link mankipulation functions', function() {
 
   it('removeLinkRelativity fn', function() {
     var links = mock.relativePaths,
@@ -73,17 +73,36 @@ describe('link validation', function() {
     }
   });
 
-
-  /*
-  5.
-  metadata.alltrue(fn - typeof i == obj)
-
-  6.
-  byId(mock.meta id) == mock.node.id
-
-  7, 8.
-  FROM_USER - mock.path
-    metalist == mock.meta
-
-  */
 });
+
+
+describe('link validation', function() {
+  it('for mock.links', function() {
+    var links = mock.links,
+        url = mock.url;
+
+    for (var i=0; i<links.length; i++) {
+      var validated = scrape.validateLink(links[i], url);
+      expect(validated).to.equal('' || undefined);
+    }
+  });
+
+  it('for relativePaths', function() {
+    var links = mock.relativePaths,
+        url = mock.url;
+
+    for (var i=0; i<links.length; i++) {
+      var validated = scrape.validateLink(links[i], url);
+      expect(validated).to.equal(mock.validatedPaths[i]);
+    }
+  })
+})
+
+/*
+  5. metadata.alltrue(fn - typeof i == obj)
+
+  6. byId(mock.meta id) == mock.node.id
+
+  7, 8. FROM_USER - mock.path
+    metalist == mock.meta
+*/
