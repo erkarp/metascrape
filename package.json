@@ -17,12 +17,14 @@
   "author": "erkarp",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.14.2",
     "bootstrap": "^3.3.6",
     "express": "^4.13.4"
   },
   "devDependencies": {
     "chai": "^3.5.0",
     "grunt": "^0.4.5",
-    "mocha": "^2.4.5"
+    "mocha": "^2.4.5",
+    "supertest": "^1.1.0"
   }
 }
