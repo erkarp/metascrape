@@ -1,12 +1,14 @@
 var http = require('http');
 
 module.exports = {
-  getHTML: function(link) {
-    return http.get(link, function(e, response) {
+  metalist: [],
+
+  html: function(link) {
+    return http.get(link, function(e, response, callback) {
       if (e) {
         return e
       }
-  		return response;
+  		return callback(response);
     });
   },
 
@@ -30,7 +32,11 @@ module.exports = {
 
     if (r != null && r != undefined) {
         if (this.metalist.indexOf(r[1]) == -1 && this.validateLink(r[1], url)) {
-          this.metalist.push(r[1]);
+
+          this.metalist.push({
+            slug: r[1]
+          });
+
         }
         sub = html.substr(r[1].length);
         match = this.links(sub, url);
@@ -97,7 +103,6 @@ module.exports = {
       }
     }
   }
-,
 
 /*
 FROM_USER - path

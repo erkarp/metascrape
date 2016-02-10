@@ -17,11 +17,13 @@ describe('loading express', function () {
       .get('/')
       .expect(200, done);
   });
+  
   it('404 everything else', function testPath(done) {
     request(server)
       .get('/foo/bar')
       .expect(404, done);
   });
+
   it('pass info via json', function() {
 
      request(server)
