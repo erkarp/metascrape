@@ -8,12 +8,23 @@ module.exports = function(grunt) {
       },
       dist: {
         files: {
-          "js/app.js": "js/app.jsx"
+          "public/javascripts/app.js": "public/javascripts/app.jsx"
         }
       }
-    }
+    },
+		watch: {
+		  scripts: {
+		    files: ['public/javascripts/*'],
+		    tasks: ['babel'],
+		    options: {
+		      spawn: false,
+		    },
+		  },
+		}
 	});
 	grunt.loadNpmTasks('grunt-babel');
+	grunt.loadNpmTasks('grunt-contrib-watch');
+
 
 	grunt.registerTask('default', ['babel']);
 };

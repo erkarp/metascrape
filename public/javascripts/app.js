@@ -1,11 +1,5 @@
 'use strict';
 
-var _reactDom = require('react-dom');
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 React = typeof module !== 'undefined' && module.exports ? require('react/addons') : window.React;
 
 var LinkList = React.createClass({
@@ -58,10 +52,11 @@ var LinkList = React.createClass({
   }
 });
 
+// import ReactDOM from 'react-dom';
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     LinkList: LinkList
   };
 } else {
-  _reactDom2.default.render(React.createElement(LinkList, null), document.getElementById('#wrapper'));
+  React.render(React.createElement(LinkList, null), document.getElementById('#wrapper'));
 }

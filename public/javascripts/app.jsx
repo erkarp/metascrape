@@ -29,11 +29,11 @@ var LinkList = React.createClass({
 });
 
 
-import ReactDOM from 'react-dom';
+// import ReactDOM from 'react-dom';
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     LinkList: LinkList
   }
 } else {
-  ReactDOM.render(<LinkList />, document.getElementById('#wrapper'))
+  React.render(<LinkList />, document.getElementById('#wrapper'))
 }

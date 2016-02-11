@@ -5,9 +5,7 @@ module.exports = {
 
   html: function(link) {
     return http.get(link, function(e, response, callback) {
-      if (e) {
-        return e
-      }
+      if (e) { return e }
   		return callback(response);
     });
   },
