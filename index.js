@@ -1,3 +1,4 @@
+/*
 var express = require('express'),
     bodyparser = require('body-parser'),
 	  React = require('react/addons'),
@@ -34,3 +35,4 @@ var server = app.listen(3000, function () {
 });
 
 app.listen(process.env.PORT||3000);
+*/

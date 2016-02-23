@@ -1,13 +1,11 @@
 React = (typeof module !== 'undefined' && module.exports) ? require('react/addons') : window.React
 
 var LinkList = React.createClass({
-  render: function(){
-    var links = this.props.links
-    if (!messages || !messages.length>0) return (
-        <p>No messages yet</p>
-    )
+  render: function() {
+    var links = this.props.links || []
+
     return (
-      <table className="table ">
+      <table>
         <caption>Links</caption>
         <thead>
           <tr>
@@ -26,14 +24,28 @@ var LinkList = React.createClass({
       </table>
     )
   }
-});
+})
 
-
-// import ReactDOM from 'react-dom';
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = {
-    LinkList: LinkList
+var UrlForm = React.createClass({
+  render: function() {
+    return (
+      <form action="links" method="post">
+        <input type="text" name="url"/>
+        <input type="submit"/>
+      </form>
+    )
   }
-} else {
-  React.render(<LinkList />, document.getElementById('#wrapper'))
-}
+})
+
+var Page = React.createClass({
+  render: function() {
+    return (
+      <main>
+        <UrlForm></UrlForm>
+        <LinkList></LinkList>
+      </main>
+    )
+  }
+})
+
+ReactDOM.render(<Page />, document.getElementById('main'))

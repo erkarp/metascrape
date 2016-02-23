@@ -1,20 +1,14 @@
-'use strict';
-
 React = typeof module !== 'undefined' && module.exports ? require('react/addons') : window.React;
 
 var LinkList = React.createClass({
   displayName: 'LinkList',
 
-  render: function render() {
-    var links = this.props.links;
-    if (!messages || !messages.length > 0) return React.createElement(
-      'p',
-      null,
-      'No messages yet'
-    );
+  render: function () {
+    var links = this.props.links || [];
+
     return React.createElement(
       'table',
-      { className: 'table ' },
+      null,
       React.createElement(
         'caption',
         null,
@@ -52,11 +46,31 @@ var LinkList = React.createClass({
   }
 });
 
-// import ReactDOM from 'react-dom';
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = {
-    LinkList: LinkList
-  };
-} else {
-  React.render(React.createElement(LinkList, null), document.getElementById('#wrapper'));
-}
+var UrlForm = React.createClass({
+  displayName: 'UrlForm',
+
+  render: function () {
+    return React.createElement(
+      'form',
+      { action: 'links', method: 'post' },
+      React.createElement('input', { type: 'text', name: 'url' }),
+      React.createElement('input', { type: 'submit' })
+    );
+  }
+});
+
+var Page = React.createClass({
+  displayName: 'Page',
+
+  render: function () {
+    return React.createElement(
+      'main',
+      null,
+      React.createElement(UrlForm, null),
+      React.createElement(LinkList, null)
+    );
+  }
+});
+
+ReactDOM.render(React.createElement(Page, null), document.getElementById('main'));
+//# sourceMappingURL=app.js.map
