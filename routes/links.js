@@ -1,12 +1,14 @@
 var express = require('express');
+var scrape = require('../tasks/script.js')
 var router = express.Router();
 
 
 router.post('/', function(req, res, next){
-  var userName = req.body.url;
-  var html = 'Hello: ' + userName + '.<br>' +
-             '<a href="/">Try again.</a>';
-  res.send(html);
+  var text = req.body.url;
+  res.render('links', {
+    title: text,
+    links: scrape.html(text)
+   });
 });
 
 router.use('/', function(req, res, next) {

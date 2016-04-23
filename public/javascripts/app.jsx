@@ -38,14 +38,31 @@ var UrlForm = React.createClass({
 })
 
 var Page = React.createClass({
+  getInitialState: function(ops){
+    var links = this.props.links || []
+    return {links: links}
+  },
+  componentDidMount: function(){
+    var url = 'http://localhost:3000/messages'
+    var _this = this
+    $.getJSON(url, function(result){
+      console.log(result)
+      if(!result || !result.length){
+        return;
+      }
+      _this.setState({ messages: result });
+    });
+  },
+
   render: function() {
+    console.log(this.props.links)
     return (
       <main>
         <UrlForm></UrlForm>
-        <LinkList></LinkList>
+        <LinkList list={this.props.links}></LinkList>
       </main>
     )
   }
 })
 
-ReactDOM.render(<Page />, document.getElementById('main'))
+ReactDOM.render(<Page/>, document.getElementById('main'))

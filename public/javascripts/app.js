@@ -62,12 +62,29 @@ var UrlForm = React.createClass({
 var Page = React.createClass({
   displayName: 'Page',
 
+  getInitialState: function (ops) {
+    var links = this.props.links || [];
+    return { links: links };
+  },
+  componentDidMount: function () {
+    var url = 'http://localhost:3000/messages';
+    var _this = this;
+    $.getJSON(url, function (result) {
+      console.log(result);
+      if (!result || !result.length) {
+        return;
+      }
+      _this.setState({ messages: result });
+    });
+  },
+
   render: function () {
+    console.log(this.props.links);
     return React.createElement(
       'main',
       null,
       React.createElement(UrlForm, null),
-      React.createElement(LinkList, null)
+      React.createElement(LinkList, { list: this.props.links })
     );
   }
 });
