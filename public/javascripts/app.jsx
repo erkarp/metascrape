@@ -30,8 +30,8 @@ var UrlForm = React.createClass({
   render: function() {
     return (
       <form action="links" method="post">
-        <input type="text" name="url"/>
-        <input type="submit"/>
+        <input type="url" name="website"/>
+        <input onclick="alert(website.hostname)" type="submit"/>
       </form>
     )
   }

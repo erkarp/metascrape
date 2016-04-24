@@ -1,28 +1,7 @@
 var http = require('http');
 
 module.exports = {
-  metalist: [],
-
-  html: function(link) {
-    var options = {
-        host: 'www.google.com'
-    };
-
-    return http.get(options, function (http_res) {
-        // initialize the container for our data
-        var data = "";
-
-        // this event fires many times, each time collecting another piece of the response
-        http_res.on("data", function (chunk) {
-            data += chunk;
-        });
-
-        // this event fires *one* time, after all the `data` events/chunks have been gathered
-        http_res.on("end", function () {
-          return data;
-        });
-    });
-  },
+  metalist: ['hi'],
 
   addPage: function(arr, obj) {
     return arr.push(obj);

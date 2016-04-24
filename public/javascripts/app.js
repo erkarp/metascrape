@@ -53,7 +53,7 @@ var UrlForm = React.createClass({
     return React.createElement(
       'form',
       { action: 'links', method: 'post' },
-      React.createElement('input', { type: 'text', name: 'url' }),
+      React.createElement('input', { type: 'url', name: 'website' }),
       React.createElement('input', { type: 'submit' })
     );
   }

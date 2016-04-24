@@ -1,5 +1,13 @@
 extends layout
 
+block import
+  link(rel=stylesheet href=title)
+  
 block content
   h1 Links on #{title}
   #main
+  
+
+  each link in links
+    code #{link}: #{links[link]} ~~
+    hr
