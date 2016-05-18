@@ -45,6 +45,7 @@ var Page = React.createClass({
   componentDidMount: function(){
     var url = 'http://localhost:3000/messages'
     var _this = this
+    /*
     $.getJSON(url, function(result){
       console.log(result)
       if(!result || !result.length){
@@ -52,6 +53,7 @@ var Page = React.createClass({
       }
       _this.setState({ messages: result });
     });
+    */
   },
 
   render: function() {

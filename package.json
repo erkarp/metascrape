@@ -21,6 +21,7 @@
   "dependencies": {
     "body-parser": "^1.14.2",
     "bootstrap": "^3.3.6",
+    "cheerio": "^0.20.0",
     "cookie-parser": "~1.0.1",
     "debug": "~0.7.4",
     "ejs": "~0.8.5",
@@ -29,6 +30,7 @@
     "morgan": "~1.0.0",
     "oauth": "^0.9.12",
     "react": "^0.14.7",
+    "request": "^2.72.0",
     "serve-favicon": "^2.3.0"
   },
   "devDependencies": {

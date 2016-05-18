@@ -54,7 +54,7 @@ var UrlForm = React.createClass({
       'form',
       { action: 'links', method: 'post' },
       React.createElement('input', { type: 'url', name: 'website' }),
-      React.createElement('input', { type: 'submit' })
+      React.createElement('input', { onclick: 'alert(website.hostname)', type: 'submit' })
     );
   }
 });
@@ -69,13 +69,15 @@ var Page = React.createClass({
   componentDidMount: function () {
     var url = 'http://localhost:3000/messages';
     var _this = this;
-    $.getJSON(url, function (result) {
-      console.log(result);
-      if (!result || !result.length) {
+    /*
+    $.getJSON(url, function(result){
+      console.log(result)
+      if(!result || !result.length){
         return;
       }
       _this.setState({ messages: result });
     });
+    */
   },
 
   render: function () {
