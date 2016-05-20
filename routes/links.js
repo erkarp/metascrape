@@ -47,7 +47,6 @@ function parseCheerioForLinks(c, text) {
 
     if (!href ||
         href.length < 2 ||
-        href.indexOf('#') === 0 ||
         href.includes('mailto')) {
       return;
     }
@@ -57,12 +56,19 @@ function parseCheerioForLinks(c, text) {
       return;
     }
 
+    var hash = href.indexOf('#');
+    if (hash > -1) {
+      href = href.slice(0, hash);
+    }
+
     if (href[0] === '/') {
       href = parts[0] + '//' + parts[2] + href;
     }
 
     if (href.length > 0) {
-      links.push(href);
+      links.push({
+        slug: href
+      });
     }
   });
 
@@ -70,14 +76,25 @@ function parseCheerioForLinks(c, text) {
 };
 
 router.post('/', function(req, res, next) {
-    var text = req.body.website, title = 'title', links;
+    var text = req.body.website;
 
     getCheerio(res, text, true, function($, res) {
 
-      var list = parseCheerioForLinks($, text);
+      var title = getMetaData($).title,
+        list = parseCheerioForLinks($, text);
 
-      links = list.sort().filter(function(elem, i, arr) {
-        return arr[i] === arr[i-1] ? false : true;
+      var links = list.sort(function(a,b) {
+        return (a.slug > b.slug) ? 1 : ((b.slug > a.slug) ? -1 : 0);
+      })
+      .filter(function(elem, i, arr) {
+        if (i === 0) { return true; }
+
+        if (arr[i].slug === arr[i-1].slug ||
+          arr[i].slug === arr[i-1].slug + '/') {
+            return false;
+          }
+
+        return true;
       });
 
       res.render('links', {
