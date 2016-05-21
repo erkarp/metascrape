@@ -25,7 +25,7 @@ module.exports = {
         if (this.metalist.indexOf(r[1]) == -1 && this.validateLink(r[1], url)) {
 
           this.metalist.push({
-            slug: r[1]
+            url: r[1]
           });
 
         }

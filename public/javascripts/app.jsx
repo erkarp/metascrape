@@ -16,7 +16,7 @@ var LinkList = React.createClass({
           {links.map(function(link){
             return (
               <tr key={link._id}>
-                <td className="span2">{link.slug}</td>
+                <td className="span2">{link.url}</td>
               </tr>
             )
           })}

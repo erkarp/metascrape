@@ -37,7 +37,7 @@ var LinkList = React.createClass({
             React.createElement(
               'td',
               { className: 'span2' },
-              link.slug
+              link.url
             )
           );
         })

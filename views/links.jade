@@ -9,4 +9,7 @@ block content
   
 
   each link in links
-    li: code #{link.slug} 
+    li
+      code #{link.slug} 
+      h5 #{link.title}
+      p #{link.description}

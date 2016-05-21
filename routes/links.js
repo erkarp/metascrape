@@ -7,27 +7,6 @@ var router = express.Router();
 var parse = require('url-parse');
 
 
-function getCheerio(res, url, follow, callback) {
-  request(url, function(error, response, body) {
-    if (!error) {
-
-      var $ = cheerio.load(body),
-        links = callback($, res);
-
-/*
-      links.forEach(function(link) {
-        getCheerio(link, false, callback);
-      });
-*/
-
-      return links;
-    } else {
-      console.log("We’ve encountered an error: " + error);
-    }
-
-  });
-};
-
 function getMetaData(c) {
   var title = c('title').html(),
       description = c('meta[name=description]');
@@ -67,7 +46,7 @@ function parseCheerioForLinks(c, text) {
 
     if (href.length > 0) {
       links.push({
-        slug: href
+        url: href
       });
     }
   });
@@ -75,32 +54,67 @@ function parseCheerioForLinks(c, text) {
   return links;
 };
 
+function sortAndFilter(list) {
+
+  return list.sort(function(a,b) {
+    return (a.url > b.url) ? 1 : ((b.url > a.url) ? -1 : 0);
+  })
+
+  .filter(function(elem, i, arr) {
+    if (i === 0) { return true; }
+
+    if (arr[i].url === arr[i-1].url ||
+      arr[i].url === arr[i-1].url + '/') {
+        return false;
+      }
+
+    return true;
+  });
+}
+
+function getCheerio(res, url, callback) {
+  request(url, function(error, response, body) {
+    if (!error) {
+
+      var $ = cheerio.load(body);
+      callback($, res);
+
+    } else {
+      console.log("We’ve encountered an error: " + error);
+    }
+  });
+};
+
 router.post('/', function(req, res, next) {
     var text = req.body.website;
 
-    getCheerio(res, text, true, function($, res) {
+    getCheerio(res, text, function($, res) {
+
+      var list = parseCheerioForLinks($, text),
+          links = sortAndFilter(list),
+          count = 0;
+
 
       var title = getMetaData($).title,
         list = parseCheerioForLinks($, text);
 
-      var links = list.sort(function(a,b) {
-        return (a.slug > b.slug) ? 1 : ((b.slug > a.slug) ? -1 : 0);
-      })
-      .filter(function(elem, i, arr) {
-        if (i === 0) { return true; }
+      function subLinks() {
+        getCheerio(res, links[count].url, function($, rest) {
 
-        if (arr[i].slug === arr[i-1].slug ||
-          arr[i].slug === arr[i-1].slug + '/') {
-            return false;
+          //save metadata to link list [count]
+          if (links[++count]) {
+            console.log('Count: '+count);
+            getCheerio(res, links[count].url, subLinks, links, count);
           }
-
-        return true;
-      });
-
-      res.render('links', {
-        title: title,
-        links: links
-      });
+          else {
+            res.render('links', {
+              title: 'title',
+              links: links
+            });
+          }
+        }, links, count);
+      };
+      subLinks();
 
     });
 
