@@ -1,6 +1,16 @@
 module.exports = function(grunt) {
 
 	grunt.config.init({
+		sass: {
+			options: {
+				sourceMap: true
+			},
+			dist: {
+				files: {
+					'public/stylesheets/style.css': 'sass/style.scss'
+				}
+			}
+		},
     'babel': {
       options: {
         sourceMap: true,
@@ -20,8 +30,14 @@ module.exports = function(grunt) {
 		      spawn: false,
 		    },
 		  },
+			style: {
+				files: ['sass/style.scss'],
+				tasks: ['sass']
+			}
 		}
 	});
+
+	grunt.loadNpmTasks('grunt-sass');
 	grunt.loadNpmTasks('grunt-babel');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 

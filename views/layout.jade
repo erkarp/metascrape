@@ -1,10 +1,16 @@
 doctype html
 html
   head
-    title Links on #{title}
-    link(rel='stylesheet', href='/stylesheets/style.css')
-    block import
+    block title
+      title Links on #{title}
+    link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css')
+    link(rel='stylesheet' href='/stylesheets/style.css')
+    
   body
+    h1 MetaScrape 
+    h2 by Web Developers Studio
+    br
+    
     block content
     script(src='https://fb.me/react-0.14.0.js')
     script(src='https://fb.me/react-dom-0.14.0.js')

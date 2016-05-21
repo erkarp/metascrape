@@ -2,18 +2,16 @@ var http = require('https');
 var express = require('express');
 var request = require("request");
 var cheerio = require("cheerio");
-var scrape = require('../tasks/script.js');
+var utils = require('../tasks/script.js');
 var router = express.Router();
 var parse = require('url-parse');
 
 
-function getMetaData(c) {
-  var title = c('title').html(),
-      description = c('meta[name=description]');
-  return {
-    title: title,
-    description: description
-  }
+function getMetaData(c, obj) {
+  obj.title = utils.unescape(c('title').html());
+  var desc = c('meta[name=description]').attr('content');
+  obj.description = utils.unescape(desc);
+  return obj;
 };
 
 function parseCheerioForLinks(c, text) {
@@ -76,6 +74,7 @@ function getCheerio(res, url, callback) {
   request(url, function(error, response, body) {
     if (!error) {
 
+      console.log(body);
       var $ = cheerio.load(body);
       callback($, res);
 
@@ -94,26 +93,26 @@ router.post('/', function(req, res, next) {
           links = sortAndFilter(list),
           count = 0;
 
-
-      var title = getMetaData($).title,
-        list = parseCheerioForLinks($, text);
-
       function subLinks() {
-        getCheerio(res, links[count].url, function($, rest) {
+        if (links[count]) {
+          getCheerio(res, links[count].url, function($, rest) {
 
-          //save metadata to link list [count]
-          if (links[++count]) {
-            console.log('Count: '+count);
-            getCheerio(res, links[count].url, subLinks, links, count);
-          }
-          else {
-            res.render('links', {
-              title: 'title',
-              links: links
-            });
-          }
-        }, links, count);
-      };
+            links[count] = getMetaData($, links[count]);
+
+            if (links[++count]) {
+              console.log('Count: '+count);
+              getCheerio(res, links[count].url, subLinks, links, count);
+            }
+            else {
+              res.render('links', {
+                title: 'title',
+                links: links,
+                site: text
+              });
+            }
+          }, links, count);
+        };
+      }
       subLinks();
 
     });

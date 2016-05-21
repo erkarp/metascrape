@@ -1,0 +1,45 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+h1 {
+  font-size: 4em;
+  text-align: center;
+}
+
+h2 {
+  font-size: 1.7em;
+  text-align: center;
+}
+
+
+.description {
+  min-height: 16px;
+}
+.title,
+.description {
+  &:empty:after {
+    display: inline;
+    font-style: italic;
+    color: #bbb;
+  }
+}
+.title:empty:after {
+  content: 'empty title';
+}
+.description:empty:after {
+  content: 'empty meta description';
+}
+
+
+.good {
+  color: green;
+}
+.bad {
+  color: red;
+}

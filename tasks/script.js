@@ -3,16 +3,17 @@ var http = require('http');
 module.exports = {
   metalist: ['hi'],
 
-  addPage: function(arr, obj) {
-    return arr.push(obj);
-  },
 
-  title: function(html) {
-    if (typeof html !== 'string') {
-      return
-    }
-    var matches = html.match(/<title>(.*)<\/title>/);
-    return matches[1];
+  unescape: function(safe) {
+    if (safe) {
+      return safe
+       .replace(/&amp;/g, "&")
+       .replace(/&lt;/g, "<")
+       .replace(/&gt;/g, ">")
+       .replace(/&quot;/g, "\"")
+       .replace(/&#039;/g, "'")
+       .replace(/&apos;/g, "'");
+     }
   },
 
   links: function(html, url) {

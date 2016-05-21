@@ -1,15 +1,20 @@
 extends layout
 
-block import
-  link(rel=stylesheet href=title)
+block title 
+  title MetaScrape | #{links[0].title}
   
 block content
-  h1 Links on #{title}
-  #main
-  
+  .row
+    h3 #{links.length} internal links on #[i #{links[0].title || site}]
 
   each link in links
-    li
-      code #{link.slug} 
-      h5 #{link.title}
-      p #{link.description}
+    .row.well.well-sm
+      .col-xs-11
+        h4.title #{link.title}
+        p.description #{link.description}
+        code #{link.url} 
+      .col-xs-1
+        -var titleCC = link.title ? link.title.length : 0
+        -var descCC = link.description ? link.description.length : 0
+        h4 #[span(class=(10<titleCC && titleCC<65 ? 'good' : 'bad')) #{titleCC}]/65
+        p #[span(class=(20<descCC && descCC<155 ? 'good' : 'bad')) #{descCC}]/155
