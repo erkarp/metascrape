@@ -18,6 +18,12 @@ h2 {
 }
 
 
+form {
+    width: 250px;
+    margin: 0 auto;
+}
+
+
 .description {
   min-height: 16px;
 }
@@ -35,6 +41,7 @@ h2 {
 .description:empty:after {
   content: 'empty meta description';
 }
+
 
 
 .good {

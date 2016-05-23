@@ -32,6 +32,7 @@
     "react": "^0.14.7",
     "request": "^2.72.0",
     "serve-favicon": "^2.3.0",
+    "unescape-js": "^1.0.5",
     "url-parse": "^1.1.1"
   },
   "devDependencies": {

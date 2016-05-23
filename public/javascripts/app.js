@@ -81,12 +81,10 @@ var Page = React.createClass({
   },
 
   render: function () {
-    console.log(this.props.links);
     return React.createElement(
       'main',
       null,
-      React.createElement(UrlForm, null),
-      React.createElement(LinkList, { list: this.props.links })
+      React.createElement(UrlForm, null)
     );
   }
 });

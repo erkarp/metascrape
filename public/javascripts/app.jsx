@@ -57,11 +57,9 @@ var Page = React.createClass({
   },
 
   render: function() {
-    console.log(this.props.links)
     return (
       <main>
         <UrlForm></UrlForm>
-        <LinkList list={this.props.links}></LinkList>
       </main>
     )
   }

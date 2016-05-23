@@ -1,4 +1,4 @@
-var http = require('https');
+//var http = require('https');
 var express = require('express');
 var request = require("request");
 var cheerio = require("cheerio");
@@ -17,37 +17,64 @@ function getMetaData(c, obj) {
 function parseCheerioForLinks(c, text) {
   var parts = text.split('/'),
     url = parse(text),
-    links = [];
+    links = [],
+    domainMatch;
+
+    console.log(url.pathname);
+
+  text = text.replace(new RegExp(url.pathname + '$'), '');
+  console.log(url, text);
 
   c('a').each(function(i, elem) {
     var href = c(this).attr('href');
 
-    if (!href ||
-        href.length < 2 ||
-        href.includes('mailto')) {
+    if (!href || href.includes('mailto')) {
       return;
     }
 
+    console.log(i, parse(href));
     var hrefHostname = parse(href).hostname;
-    if (hrefHostname && hrefHostname !== url.hostname) {
-      return;
+    console.log('hrefHostname: ',hrefHostname);
+    console.log('url.hostname: ',url.hostname);
+
+    if ( hrefHostname.includes('.') &&
+        !hrefHostname.includes('.html')) {
+
+          domainMatch =
+          hrefHostname.includes(url.hostname) ||
+          url.hostname.includes(hrefHostname);
+
+          console.log(domainMatch);
+          if (!domainMatch) { return; }
     }
 
     var hash = href.indexOf('#');
     if (hash > -1) {
+
       href = href.slice(0, hash);
+
+      if (href.length < 1) {
+        return;
+      }
     }
 
-    if (href[0] === '/') {
-      href = parts[0] + '//' + parts[2] + href;
+    if (href[0] === '/' ) {
+      href = url.hostname + href;
+    }
+    else if (href.includes('..')) {
+      var lastSlash = url.pathname.lastIndexOf('/');
+      href = text + '/' + url.pathname.slice(0, lastSlash) + href;
+    }
+    else if (!domainMatch) {
+      href = text + '/' + href;
     }
 
-    if (href.length > 0) {
-      links.push({
-        url: href
-      });
-    }
+    console.log('about to push href: ', href, text);
+    links.push({ url: href });
   });
+  links.forEach(function(link){
+    console.log(link);
+  })
 
   return links;
 };
@@ -74,7 +101,6 @@ function getCheerio(res, url, callback) {
   request(url, function(error, response, body) {
     if (!error) {
 
-      console.log(body);
       var $ = cheerio.load(body);
       callback($, res);
 
@@ -92,6 +118,7 @@ router.post('/', function(req, res, next) {
       var list = parseCheerioForLinks($, text),
           links = sortAndFilter(list),
           count = 0;
+
 
       function subLinks() {
         if (links[count]) {
@@ -114,7 +141,6 @@ router.post('/', function(req, res, next) {
         };
       }
       subLinks();
-
     });
 
 });
