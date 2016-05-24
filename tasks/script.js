@@ -1,9 +1,11 @@
-var http = require('http');
+var express = require('express');
+var request = require("request");
+var cheerio = require("cheerio");
+var parse = require('url-parse');
+var utils = require('../tasks/script.js');
+var router = express.Router();
 
 module.exports = {
-  metalist: ['hi'],
-
-
   unescape: function(safe) {
     if (safe) {
       return safe
@@ -15,6 +17,13 @@ module.exports = {
        .replace(/&#039;/g, "'")
        .replace(/&apos;/g, "'");
      }
+  },
+
+  getMetaData: function(c, obj) {
+    obj.title = this.unescape(c('title').html()) || null;
+    var desc = c('meta[name=description]').attr('content');
+    obj.description = this.unescape(desc) || null;
+    return obj;
   },
 
   links: function(html, url) {

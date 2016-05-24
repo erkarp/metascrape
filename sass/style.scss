@@ -23,6 +23,23 @@ form {
     margin: 0 auto;
 }
 
+.row .row {
+  margin-left: 0;
+  margin-right: 15px;
+}
+
+.well.well-sm {
+  overflow-x: scroll;
+}
+
+@media(max-width: 501px) {
+  .row > div {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+}
+
 
 .description {
   min-height: 16px;

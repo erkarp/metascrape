@@ -1,18 +1,12 @@
-//var http = require('https');
 var express = require('express');
 var request = require("request");
 var cheerio = require("cheerio");
+var parse = require('url-parse');
 var utils = require('../tasks/script.js');
 var router = express.Router();
-var parse = require('url-parse');
 
 
-function getMetaData(c, obj) {
-  obj.title = utils.unescape(c('title').html());
-  var desc = c('meta[name=description]').attr('content');
-  obj.description = utils.unescape(desc);
-  return obj;
-};
+
 
 function parseCheerioForLinks(c, text) {
   var parts = text.split('/'),
@@ -65,6 +59,9 @@ function parseCheerioForLinks(c, text) {
       var lastSlash = url.pathname.lastIndexOf('/');
       href = text + '/' + url.pathname.slice(0, lastSlash) + href;
     }
+    else if (href.includes('./')) {
+      href = text + '/' + href.replace('./', '');
+    }
     else if (!domainMatch) {
       href = text + '/' + href;
     }
@@ -106,6 +103,7 @@ function getCheerio(res, url, callback) {
 
     } else {
       console.log("We’ve encountered an error: " + error);
+      return;
     }
   });
 };
@@ -124,7 +122,7 @@ router.post('/', function(req, res, next) {
         if (links[count]) {
           getCheerio(res, links[count].url, function($, rest) {
 
-            links[count] = getMetaData($, links[count]);
+            links[count] = utils.getMetaData($, links[count]);
 
             if (links[++count]) {
               console.log('Count: '+count);

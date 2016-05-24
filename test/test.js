@@ -6,7 +6,11 @@ var fs = require('fs'),
 
 describe('html file return and parse', function () {
 
-  it('mock.page is a string and longer than 0', function () {
+  beforeEach(function () {
+    server = require('./../app');
+  })
+
+  it('gets a title and description', function () {
     expect(mock.page).to.be.a('string');
     expect(mock.page.length).to.be.above(0);
   });

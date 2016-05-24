@@ -32,7 +32,6 @@
     "react": "^0.14.7",
     "request": "^2.72.0",
     "serve-favicon": "^2.3.0",
-    "unescape-js": "^1.0.5",
     "url-parse": "^1.1.1"
   },
   "devDependencies": {
@@ -43,8 +42,10 @@
     "grunt-babel": "^6.0.0",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-sass": "^1.2.0",
+    "grunt-sass-lint": "^0.2.0",
     "mocha": "^2.4.5",
     "nodemon": "^1.9.0",
+    "sass-lint": "^1.7.0",
     "supertest": "^1.1.0"
   }
 }
