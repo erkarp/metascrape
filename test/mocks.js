@@ -18,38 +18,63 @@ module.exports = {
     'https://www.linkedin.com/in/emilykarp',
     'http://codepen.io/emilykarp/',
     'https://github.com/erkarp/',
-    'http://www.webdevelopersstudio.com/'
+    'http://www.webdevelopersstudio.com/',
+    'about.html',
+    '/about.html'
   ],
+
   sameDomain: [
-    'http://www.same-domain.com',
-    'http://www.same-domain.com/',
-    'http://www.same-domain.com/index',
-    'http://www.same-domain.com/index.html',
-    'http://www.same-domain.com/index.pdf',
-    'http://www.same-domain.com/indexdir/index',
-    'http://www.same-domain.com/indexdir/index.html',
-    'http://www.same-domain.com/indexdir/anotherdir/index.html',
-    'http://www.same-domain.com/indexdir/anotherdir/index.html',
-    'http://same-domain.com',
-    'http://same-domain.com/',
-    'http://same-domain.com/index',
-    'http://same-domain.com/index.html',
-    'http://same-domain.com/index.pdf',
-    'http://same-domain.com/indexdir/index',
-    'http://same-domain.com/indexdir/index.html',
-    'http://same-domain.com/indexdir/anotherdir/index.html',
-    'http://same-domain.com/indexdir/anotherdir/index.html',
-    'http://super.same-domain.com',
-    'http://super.same-domain.com/',
-    'http://super.same-domain.com/index',
-    'http://super.same-domain.com/index.html',
-    'http://super.same-domain.com/index.pdf',
-    'http://super.same-domain.com/indexdir/index',
-    'http://super.same-domain.com/indexdir/index.html',
-    'http://super.same-domain.com/indexdir/anotherdir/index.html',
-    'http://super.same-domain.com/indexdir/anotherdir/index.html',
-    ''
+    {
+      href: 'http://www.same-domain.com',
+      result: 'http://www.same-domain.com'
+    }, {
+      href: 'http://www.same-domain.com/',
+      result: 'http://www.same-domain.com/'
+    }, {
+      href: 'http://www.same-domain.com/index',
+      result: 'http://www.same-domain.com/index'
+    }, {
+      href: 'http://www.same-domain.com/index.html',
+      result: 'http://www.same-domain.com/index.html'
+    }, {
+      href: 'http://www.same-domain.com/index.pdf',
+      result: undefined
+    }, {
+      href: 'http://www.same-domain.com/indexdir/index',
+      result: 'http://www.same-domain.com/indexdir/index'
+    }, {
+      href: 'http://www.same-domain.com/indexdir/index.html',
+      result: 'http://www.same-domain.com/indexdir/index.html'
+    }, {
+      href: 'http://www.same-domain.com/indexdir/anotherdir/index.html',
+      result: 'http://www.same-domain.com/indexdir/anotherdir/index.html'
+    }, {
+      href: 'http://same-domain.com',
+      result: 'http://same-domain.com/'
+    }, {
+      href: 'http://same-domain.com/index',
+      result: 'http://same-domain.com/index'
+    }, {
+      href: 'http://same-domain.com/index',
+      result:'http://same-domain.com/index'
+    }, {
+      href: 'http://same-domain.com/index.php',
+      result:'http://same-domain.com/index.php'
+    }, {
+      href: 'http://same-domain.com/index.pdf',
+      result: undefined
+    }, {
+      href: 'http://same-domain.com/indexdir/index',
+      result:'http://same-domain.com/indexdir/index'
+    }, {
+      href: 'http://same-domain.com/indexdir/index.html',
+      result:'http://same-domain.com/indexdir/index.html'
+    }, {
+      href: 'http://same-domain.com/indexdir/anotherdir/index',
+      result: 'http://same-domain.com/indexdir/anotherdir/index'
+    }
   ],
+
   linksPaths: [
     '',
     '',

@@ -1,16 +1,9 @@
 var request = require('supertest'),
-    expect = require('chai').expect;
+    expect = require('chai').expect,
+    server = require('./../app');
+
 
 describe('loading express', function () {
-  var server;
-
-  beforeEach(function () {
-    server = require('./../app');
-  });
-
-  afterEach(function () {
-    server.close();
-  });
 
   it('responds to /', function testSlash(done) {
     request(server)
@@ -32,7 +25,6 @@ describe('loading express', function () {
       .end(function(req, res) {
         console.log(res.body);
       });
-
-//      console.log(r);
+      
   });
 });

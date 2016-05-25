@@ -2,7 +2,7 @@ var express = require('express');
 var request = require('request');
 var cheerio = require('cheerio');
 var parse = require('url-parse');
-var clean = require('./unescape.js');
+var clean = require('./unescape');
 var router = express.Router();
 
 module.exports = {
@@ -28,6 +28,18 @@ module.exports = {
   },
 
 
+  removeHash: function(href) {
+    var hash = href.indexOf('#');
+
+    if (hash > -1) {
+      href = href.slice(0, hash);
+
+      if (href.length > 0) {
+        return href;
+      }
+    }
+  },
+
 
   linkClimbsDir: function(link) {
     return  link.includes('./') || link.includes('..');
@@ -36,9 +48,8 @@ module.exports = {
   removeRelativity: function(link, url) {
 
     if (this.linkClimbsDir(link)) {
-      var count = 0,
-        newlink = '',
-        dir = url.pathname.split('/');
+      var dir = url.pathname.split('/'),
+        count = 0;
 
       while (link.includes('../')) {
         link.replace('../', '');
@@ -48,8 +59,7 @@ module.exports = {
 
       //count back segments from url.pathname
       dir = dir.slice(0, dir.length-count);
-      newlink = url.hostname + '/' + dir.join('/');
-      return newlink;
+      return url.hostname + '/' + dir.join('/');
     }
     return link;
 
@@ -59,41 +69,35 @@ module.exports = {
     return (linkHost.includes(thisHost) || linkHost.includes(thisHost));
   },
 
-  isInternal: function(hrefHost, thisHost) {
-    if (hrefHost.includes('.') && !hrefHost.includes('.html')) {
-      return domainMatch(hrefHost, thisHost);
+  removeMatchingHostname: function(text, url) {
+    if (text.includes(parse(url).hostname)) {
+      return parse(text).pathname;
+    } else {
+      return text;
     }
-    //hostname is a relative link, eg "/about" or "about.html"
-    return true;
   },
 
-  removeHash: function(href) {
-    var hash = href.indexOf('#');
-    if (hash > -1) {
-
-      href = href.slice(0, hash);
-
-      if (href.length > 0) {
-        return href;
-      }
+  isInternalHTML: function(hrefHost) {
+    if (!hrefHost.includes('.') ||
+         hrefHost.includes('./' || '.html' || '.php' || '.xml' || '.asp')) {
+      return true;
     }
   },
 
   validate: function(href, url) {
+    href = this.removeMatchingHostname(href, url);
 
-    var hrefHostname = parse(href).hostname;
-
-    if (!this.isInternal(hrefHostname, url.hostname)) {
+    if (!href || !this.isInternalHTML(href)) {
       return;
     };
 
     href = this.removeLeadingSlash(href);
     if (!href) { return; }
 
-    href = this.removeHash(href);
+    href = this.removeRelativity(href, url);
     if (!href) { return; }
 
-    href = this.removeRelativity(href, url);
+    href = this.removeHash(href);
     if (!href) { return; }
 
     return url.hostname + '/' + href;
@@ -114,7 +118,7 @@ module.exports = {
 
         }
         sub = html.substr(r[1].length);
-        match = this.links(sub, url);
+        match = this.links(sub, url);2
     }
   },
 
@@ -141,25 +145,11 @@ module.exports = {
     return link;
   },
 
-  reduceLinkToPath: function(link) {
-    if (link.indexOf('.') > -1) {
-      link = link.substr(link.lastIndexOf('.'));
-
-      if (link.indexOf('/') > -1) {
-        return link.substr(link.indexOf('/')+1);
-
-      } else {
-        return '';
-      }
-    }
-    return link;
-  },
-
   checkLinkExtension: function(link) {
     var extensions = ['.html', '.txt', '.pdf'];
 
     for (var i=0; i<extensions.length; i++) {
-      if (link.indexOf(extensions[i]) > -1) {
+      if (link.includes(extensions[i])) {
         return link;
       }
     }

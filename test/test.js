@@ -1,4 +1,5 @@
 var fs = require('fs'),
+    request = require('supertest'),
     expect = require('chai').expect,
     scrape = require('./../tasks/script'),
     cheerio = require("cheerio"),
@@ -17,10 +18,13 @@ describe('html file return and parse', function () {
     expect(obj.description).to.be.a('string' || null);
   });
 
- 
+});
+
+describe('VALIDATION HELPER FUNCTIONS', function() {
+
   it('check if "http://www.same-domain.com" is internal', function() {
-    var shouldBeTrue = scrape.isInternal(mock.sameDomain[0], check);
-    expect(shouldBeTrue).to.be.true;
+    var shouldBeUndefined = scrape.isInternalHTML(parse(check).hostname);
+    expect(shouldBeUndefined).to.not.be.true;
   });
 
   it('should return everything up to "#"', function() {
@@ -28,30 +32,42 @@ describe('html file return and parse', function () {
     expect(scrape.removeHash(linkWithHash)).to.equal(check);
   });
 
-  it('check numberOfDots', function() {
+  it('count the numberOfDots', function() {
     expect(scrape.numberOfDots(check)).to.equal(2);
   });
 
-  it('check linkClimbsDir', function() {
+  it('does linkClimbsDir', function() {
     expect(scrape.linkClimbsDir(check)).to.not.be.true;
     expect(scrape.linkClimbsDir('../utils.js')).to.be.true;
   });
 
-  it('check startsAtRoot', function() {
+  it('check if link startsAtRoot', function() {
     expect(scrape.startsAtRoot(check)).to.not.be.true;
     expect(scrape.startsAtRoot('/about.html')).to.be.true;
-  });
-
-  it('check "http://www.same-domain.com" against sameDomain link', function() {
-
-    var link = scrape.validate(mock.sameDomain[0]);
-    expect(check).to.equal(link);
   });
 
 });
 
 
-describe('link mankipulation functions', function() {
+describe('LINK VALIDATION', function() {
+  /*
+  it('check "http://www.same-domain.com" against sameDomain link', function() {
+    var link = scrape.validate(mock.sameDomain[0], check);
+    expect(check).to.equal(link);
+  });
+  */
+  
+  mock.sameDomain.forEach(function(linkObj, i) {
+    it(i+' - checking '+mock.sameDomain[i].href, function() {
+      var validation = scrape.validate(mock.sameDomain[i].href);
+      expect(validation).to.equal(mock.sameDomain[i].result);
+    })
+  });
+
+});
+
+
+describe('DEPRECIATED -- link mankipulation functions', function() {
 
   it('removeLinkRelativity fn', function() {
     var links = mock.relativePaths,
@@ -59,16 +75,6 @@ describe('link mankipulation functions', function() {
 
     for (var i=0; i<links.length; i++) {
       var part = scrape.removeLinkRelativity(links[i]);
-      expect(part).to.equal(valid[i]);
-    }
-  });
-
-  it('reduceLinkToPath fn', function() {
-    var links = mock.links,
-        valid = mock.linksPaths;
-
-    for (var i=0; i<links.length; i++) {
-      var part = scrape.reduceLinkToPath(links[i]);
       expect(part).to.equal(valid[i]);
     }
   });
