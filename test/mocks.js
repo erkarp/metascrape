@@ -20,6 +20,36 @@ module.exports = {
     'https://github.com/erkarp/',
     'http://www.webdevelopersstudio.com/'
   ],
+  sameDomain: [
+    'http://www.same-domain.com',
+    'http://www.same-domain.com/',
+    'http://www.same-domain.com/index',
+    'http://www.same-domain.com/index.html',
+    'http://www.same-domain.com/index.pdf',
+    'http://www.same-domain.com/indexdir/index',
+    'http://www.same-domain.com/indexdir/index.html',
+    'http://www.same-domain.com/indexdir/anotherdir/index.html',
+    'http://www.same-domain.com/indexdir/anotherdir/index.html',
+    'http://same-domain.com',
+    'http://same-domain.com/',
+    'http://same-domain.com/index',
+    'http://same-domain.com/index.html',
+    'http://same-domain.com/index.pdf',
+    'http://same-domain.com/indexdir/index',
+    'http://same-domain.com/indexdir/index.html',
+    'http://same-domain.com/indexdir/anotherdir/index.html',
+    'http://same-domain.com/indexdir/anotherdir/index.html',
+    'http://super.same-domain.com',
+    'http://super.same-domain.com/',
+    'http://super.same-domain.com/index',
+    'http://super.same-domain.com/index.html',
+    'http://super.same-domain.com/index.pdf',
+    'http://super.same-domain.com/indexdir/index',
+    'http://super.same-domain.com/indexdir/index.html',
+    'http://super.same-domain.com/indexdir/anotherdir/index.html',
+    'http://super.same-domain.com/indexdir/anotherdir/index.html',
+    ''
+  ],
   linksPaths: [
     '',
     '',
@@ -55,10 +85,11 @@ module.exports = {
     'hello.html'
   ],
   externalLinks: [
-    'terrikarp.com',
-    'www.terrikarp.com',
-    'http://terrikarp.com/info.html',
-    'https://terrikarp.com/about',
-    'mailto:emilykarp@gmail.com'
+    'external.com',
+    'www.external.com',
+    'super.external.co.uk',
+    'http://external.com/info.html',
+    'https://external.com/about',
+    'mailto:external@mail.com'
   ]
 }

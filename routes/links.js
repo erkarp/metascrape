@@ -11,10 +11,7 @@ var router = express.Router();
 function parseCheerioForLinks(c, text) {
   var parts = text.split('/'),
     url = parse(text),
-    links = [],
-    domainMatch;
-
-    console.log(url.pathname);
+    links = [];
 
   text = text.replace(new RegExp(url.pathname + '$'), '');
   console.log(url, text);
@@ -26,53 +23,13 @@ function parseCheerioForLinks(c, text) {
       return;
     }
 
-    console.log(i, parse(href));
-    var hrefHostname = parse(href).hostname;
-    console.log('hrefHostname: ',hrefHostname);
-    console.log('url.hostname: ',url.hostname);
+    link = utils.validate(link);
+    console.log('about to push link: ', href, text);
 
-    if ( hrefHostname.includes('.') &&
-        !hrefHostname.includes('.html')) {
-
-          domainMatch =
-          hrefHostname.includes(url.hostname) ||
-          url.hostname.includes(hrefHostname);
-
-          console.log(domainMatch);
-          if (!domainMatch) { return; }
+    if (link) {
+      links.push({ url: href });
     }
-
-    var hash = href.indexOf('#');
-    if (hash > -1) {
-
-      href = href.slice(0, hash);
-
-      if (href.length < 1) {
-        return;
-      }
-    }
-
-    if (href[0] === '/' ) {
-      href = url.hostname + href;
-    }
-    else if (href.includes('..')) {
-      var lastSlash = url.pathname.lastIndexOf('/');
-      href = text + '/' + url.pathname.slice(0, lastSlash) + href;
-    }
-    else if (href.includes('./')) {
-      href = text + '/' + href.replace('./', '');
-    }
-    else if (!domainMatch) {
-      href = text + '/' + href;
-    }
-
-    console.log('about to push href: ', href, text);
-    links.push({ url: href });
   });
-  links.forEach(function(link){
-    console.log(link);
-  })
-
   return links;
 };
 

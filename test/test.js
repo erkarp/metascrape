@@ -1,35 +1,53 @@
 var fs = require('fs'),
     expect = require('chai').expect,
-    scrape = require('./../script'),
+    scrape = require('./../tasks/script'),
+    cheerio = require("cheerio"),
+    parse = require('url-parse'),
     mock = require('./mocks');
 
+var check = "http://www.same-domain.com";
 
 describe('html file return and parse', function () {
 
-  beforeEach(function () {
-    server = require('./../app');
-  })
-
   it('gets a title and description', function () {
-    expect(mock.page).to.be.a('string');
-    expect(mock.page.length).to.be.above(0);
+    var $ = cheerio.load(mock.page),
+      obj = scrape.getMetaData($, {});
+
+    expect(obj.title).to.be.a('string' || null);
+    expect(obj.description).to.be.a('string' || null);
   });
 
-  it('mock.node is added to emptyarr', function() {
-    var array = [];
-    scrape.addPage(array, mock.node);
-    expect(array.length).to.equal(1);
+ 
+  it('check if "http://www.same-domain.com" is internal', function() {
+    var shouldBeTrue = scrape.isInternal(mock.sameDomain[0], check);
+    expect(shouldBeTrue).to.be.true;
   });
 
-  it('a title is mined that is equal to mock.node.title', function() {
-    var testTitle = scrape.title(mock.page);
-    expect(testTitle).to.equal(mock.node.title);
+  it('should return everything up to "#"', function() {
+    var linkWithHash = check + '#hash-value';
+    expect(scrape.removeHash(linkWithHash)).to.equal(check);
   });
 
-  it('prints all <a> hrefs in the page', function() {
-    scrape.links(mock.page, '');
-    expect(scrape.metalist.length).to.be.above(0);
+  it('check numberOfDots', function() {
+    expect(scrape.numberOfDots(check)).to.equal(2);
   });
+
+  it('check linkClimbsDir', function() {
+    expect(scrape.linkClimbsDir(check)).to.not.be.true;
+    expect(scrape.linkClimbsDir('../utils.js')).to.be.true;
+  });
+
+  it('check startsAtRoot', function() {
+    expect(scrape.startsAtRoot(check)).to.not.be.true;
+    expect(scrape.startsAtRoot('/about.html')).to.be.true;
+  });
+
+  it('check "http://www.same-domain.com" against sameDomain link', function() {
+
+    var link = scrape.validate(mock.sameDomain[0]);
+    expect(check).to.equal(link);
+  });
+
 });
 
 
@@ -83,6 +101,7 @@ describe('link mankipulation functions', function() {
 });
 
 
+/*
 describe('link validation', function() {
   it('for mock.links', function() {
     var links = mock.links,
@@ -115,7 +134,6 @@ describe('link validation', function() {
   })
 })
 
-/*
   5. metadata.alltrue(fn - typeof i == obj)
 
   6. byId(mock.meta id) == mock.node.id

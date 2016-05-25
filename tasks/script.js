@@ -1,29 +1,102 @@
 var express = require('express');
-var request = require("request");
-var cheerio = require("cheerio");
+var request = require('request');
+var cheerio = require('cheerio');
 var parse = require('url-parse');
-var utils = require('../tasks/script.js');
+var clean = require('./unescape.js');
 var router = express.Router();
 
 module.exports = {
-  unescape: function(safe) {
-    if (safe) {
-      return safe
-       .replace(/&amp;/g, "&")
-       .replace(/&lt;/g, "<")
-       .replace(/&gt;/g, ">")
-       .replace(/&#xA0;/g, " ")
-       .replace(/&quot;/g, "\"")
-       .replace(/&#039;/g, "'")
-       .replace(/&apos;/g, "'");
-     }
-  },
 
   getMetaData: function(c, obj) {
-    obj.title = this.unescape(c('title').html()) || null;
     var desc = c('meta[name=description]').attr('content');
-    obj.description = this.unescape(desc) || null;
+    obj.description = clean(desc) || null;
+    obj.title = clean(c('title').html()) || null;
     return obj;
+  },
+
+  numberOfDots: function(host) {
+    return host.replace(/[^.]/g, "").length;
+  },
+
+
+  startsAtRoot: function(link) {
+    return link[0] === '/';
+  },
+
+  removeLeadingSlash: function(href) {
+    return this.startsAtRoot(href) ? href.slice(1) : href;
+  },
+
+
+
+  linkClimbsDir: function(link) {
+    return  link.includes('./') || link.includes('..');
+  },
+
+  removeRelativity: function(link, url) {
+
+    if (this.linkClimbsDir(link)) {
+      var count = 0,
+        newlink = '',
+        dir = url.pathname.split('/');
+
+      while (link.includes('../')) {
+        link.replace('../', '');
+        count++;
+      }
+      link.replace('./', '');
+
+      //count back segments from url.pathname
+      dir = dir.slice(0, dir.length-count);
+      newlink = url.hostname + '/' + dir.join('/');
+      return newlink;
+    }
+    return link;
+
+  },
+
+  domainMatch: function(linkHost, thisHost) {
+    return (linkHost.includes(thisHost) || linkHost.includes(thisHost));
+  },
+
+  isInternal: function(hrefHost, thisHost) {
+    if (hrefHost.includes('.') && !hrefHost.includes('.html')) {
+      return domainMatch(hrefHost, thisHost);
+    }
+    //hostname is a relative link, eg "/about" or "about.html"
+    return true;
+  },
+
+  removeHash: function(href) {
+    var hash = href.indexOf('#');
+    if (hash > -1) {
+
+      href = href.slice(0, hash);
+
+      if (href.length > 0) {
+        return href;
+      }
+    }
+  },
+
+  validate: function(href, url) {
+
+    var hrefHostname = parse(href).hostname;
+
+    if (!this.isInternal(hrefHostname, url.hostname)) {
+      return;
+    };
+
+    href = this.removeLeadingSlash(href);
+    if (!href) { return; }
+
+    href = this.removeHash(href);
+    if (!href) { return; }
+
+    href = this.removeRelativity(href, url);
+    if (!href) { return; }
+
+    return url.hostname + '/' + href;
   },
 
   links: function(html, url) {
