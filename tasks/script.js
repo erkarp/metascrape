@@ -23,9 +23,10 @@ module.exports = {
     return link[0] === '/';
   },
 
-  removeLeadingSlash: function(href) {
-    var hasLeadingSlash = this.startsAtRoot(href);
-    return hasLeadingSlash ? href.slice(1) : href;
+  removeLeadingSlash: function(domain) {
+    var hasLeadingSlash = this.startsAtRoot(domain);
+    console.log(hasLeadingSlash, domain);
+    return hasLeadingSlash ? domain.slice(1) : domain;
   },
 
   removeTrailingSlash: function(href) {
@@ -82,16 +83,21 @@ module.exports = {
   },
 
   removeMatchingHostname: function(text, url) {
-    if (text.includes(url.hostname)) {
+    if (text.includes(url.hostname) || url.hostname.includes(text)) {
       return parse(text).pathname;
     } else {
       return text;
     }
   },
 
-  isInternalHTML: function(hrefHost) {
-    if (!hrefHost.includes('.') ||
-         hrefHost.includes('./' || '.html' || '.php' || '.xml' || '.asp')) {
+  acceptableFileExt: function(path) {
+    return (!path.includes('.') ||
+      path.includes('.html' || '.php' || '.xml' || '.asp'));
+  },
+
+  isInternalHTML: function(hUrl, oUrl) {
+    if (!hUrl.hostname.includes('.' || './')
+      || this.acceptableFileExt(oUrl.pathname)) {
       return true;
     }
   },
@@ -104,25 +110,36 @@ module.exports = {
   },
 
   validate: function(href, text) {
-    var url = parse(text);
+    var origURL = parse(text),
+        hrefURL = parse(href);
 
-    href = this.removeMatchingHostname(href, url);
+        console.log(hrefURL);
+    href = this.removeMatchingHostname(href, origURL);
     href = this.removeTrailingSlash(href);
 
-    if (!href || !this.isInternalHTML(parse(href).hostname)) {
+    if (!href || !this.isInternalHTML(hrefURL, origURL)) {
+    console.log('it\'s not internal', href, hrefURL.hostname);
       return;
-    };
+    }
 
     href = this.removeLeadingSlash(href);
-    if (!href) { return; }
+    if (!href) {
+    console.log('after removed leading slash', href);
+    return; }
 
-    href = this.removeRelativity(href, url);
-    if (!href) { return; }
+    href = this.removeRelativity(href, origURL);
+    if (!href) {
+    console.log('after removed relativity', href);
+    return; }
 
     href = this.removeHash(href);
-    if (!href) { return; }
+    if (!href) {
+    console.log('after removed hash', href);
+    return; }
 
-    return this.composeNewLink(href, text, url);
+    if (this.acceptableFileExt(href)) {
+      return this.composeNewLink(href, text, origURL);
+    }
   },
 
   links: function(html, url) {

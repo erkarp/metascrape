@@ -30,7 +30,7 @@ describe('VALIDATION HELPER FUNCTIONS', function() {
   it('should return everything up to "#"', function() {
     var linkWithHash = check + '#hash-value';
     expect(scrape.removeHash(linkWithHash)).to.equal(check);
-  });
+  });      
 
   it('count the numberOfDots', function() {
     expect(scrape.numberOfDots(check)).to.equal(2);
@@ -50,7 +50,7 @@ describe('VALIDATION HELPER FUNCTIONS', function() {
 /*
 describe('HIGHER LEVEL Validation Helper Functions', function() {
 
-  it( )  
+  it( )
 
 });
 */
