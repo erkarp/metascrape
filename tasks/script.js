@@ -24,7 +24,15 @@ module.exports = {
   },
 
   removeLeadingSlash: function(href) {
-    return this.startsAtRoot(href) ? href.slice(1) : href;
+    var hasLeadingSlash = this.startsAtRoot(href);
+    return hasLeadingSlash ? href.slice(1) : href;
+  },
+
+  removeTrailingSlash: function(href) {
+    var length = href.length;
+
+    return href.lastIndexOf('/') === length ?
+           href.slice(0, length) : href;
   },
 
 
@@ -33,10 +41,10 @@ module.exports = {
 
     if (hash > -1) {
       href = href.slice(0, hash);
+    }
 
-      if (href.length > 0) {
-        return href;
-      }
+    if (href.length > 0) {
+      return href;
     }
   },
 
@@ -45,18 +53,22 @@ module.exports = {
     return  link.includes('./') || link.includes('..');
   },
 
+  replaceDirStep: function(link, pathPiece) {
+    return link.replace(/\.\.\/(?=[^.]*$)/, pathPiece);
+  },
+
   removeRelativity: function(link, url) {
 
     if (this.linkClimbsDir(link)) {
       var dir = url.pathname.split('/'),
         count = 0;
 
+      console.log('IN removeRelativity', link, dir);
       while (link.includes('../')) {
-        link.replace('../', '');
+        link.replace(link, dir[dir.length-1]);
         count++;
       }
       link.replace('./', '');
-
       //count back segments from url.pathname
       dir = dir.slice(0, dir.length-count);
       return url.hostname + '/' + dir.join('/');
@@ -70,7 +82,7 @@ module.exports = {
   },
 
   removeMatchingHostname: function(text, url) {
-    if (text.includes(parse(url).hostname)) {
+    if (text.includes(url.hostname)) {
       return parse(text).pathname;
     } else {
       return text;
@@ -84,10 +96,20 @@ module.exports = {
     }
   },
 
-  validate: function(href, url) {
-    href = this.removeMatchingHostname(href, url);
+  composeNewLink: function(href, text, url) {
+    if (url.pathname) {
+      return text.replace(url.pathname, '/' + href);
+    }
+    return text + '/' + href;
+  },
 
-    if (!href || !this.isInternalHTML(href)) {
+  validate: function(href, text) {
+    var url = parse(text);
+
+    href = this.removeMatchingHostname(href, url);
+    href = this.removeTrailingSlash(href);
+
+    if (!href || !this.isInternalHTML(parse(href).hostname)) {
       return;
     };
 
@@ -100,7 +122,7 @@ module.exports = {
     href = this.removeHash(href);
     if (!href) { return; }
 
-    return url.hostname + '/' + href;
+    return this.composeNewLink(href, text, url);
   },
 
   links: function(html, url) {

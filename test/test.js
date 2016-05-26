@@ -47,19 +47,19 @@ describe('VALIDATION HELPER FUNCTIONS', function() {
   });
 
 });
+/*
+describe('HIGHER LEVEL Validation Helper Functions', function() {
 
+  it( )  
+
+});
+*/
 
 describe('LINK VALIDATION', function() {
-  /*
-  it('check "http://www.same-domain.com" against sameDomain link', function() {
-    var link = scrape.validate(mock.sameDomain[0], check);
-    expect(check).to.equal(link);
-  });
-  */
-  
+
   mock.sameDomain.forEach(function(linkObj, i) {
     it(i+' - checking '+mock.sameDomain[i].href, function() {
-      var validation = scrape.validate(mock.sameDomain[i].href);
+      var validation = scrape.validate(mock.sameDomain[i].href, check);
       expect(validation).to.equal(mock.sameDomain[i].result);
     })
   });
@@ -105,7 +105,6 @@ describe('DEPRECIATED -- link mankipulation functions', function() {
   });
 
 });
-
 
 /*
 describe('link validation', function() {
