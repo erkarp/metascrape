@@ -50,7 +50,7 @@ module.exports = {
       result: 'same-domain.com/indexdir/anotherdir/index.html'
     }, {
       href: 'http://same-domain.com',
-      result: 'same-domain.com/'
+      result: 'same-domain.com'
     }, {
       href: 'http://same-domain.com/index',
       result: 'same-domain.com/index'

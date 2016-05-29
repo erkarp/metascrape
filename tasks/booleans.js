@@ -23,8 +23,13 @@ module.exports = {
   },
 
   haveAcceptableFile: function(path) {
-    return (!path.includes('.') ||
-      path.includes('.html' || '.php' || '.xml' || '.asp'));
+    return (
+      !  path.includes('.')
+      || path.includes('.htm')
+      || path.includes('.php')
+      || path.includes('.xml')
+      || path.includes('.asp')
+    );
   }
 
 }

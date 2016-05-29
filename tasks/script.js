@@ -16,18 +16,6 @@ module.exports = {
     return obj;
   },
 
-  replaceDirStep: function(link, pathPiece) {
-    return link.replace(/\.\.\/(?=[^.]*$)/, pathPiece);
-  },
-
-  removeMatchingHostname: function(text, url) {
-    if (text.includes(url.hostname) || url.hostname.includes(text)) {
-      return parse(text).pathname;
-    } else {
-      return text;
-    }
-  },
-
   isInternalHTML: function(hUrl, oUrl) {
     if (!hUrl.hostname.includes('.' || './')
       || does.haveAcceptableFile(oUrl.pathname)) {
@@ -37,13 +25,15 @@ module.exports = {
 
   cleanPath: function(href) {
 
-    href = remove.trailingSlash(href);
-    href = remove.leadingSlash(href);
-    if (!href) { return; }
-
     href = remove.hash(href);
     if (!href) { return; }
 
+    if (href.length === 1) {
+      return href;
+    }
+
+    href = remove.trailingSlash(href);
+    href = remove.leadingSlash(href);
     return href;
   },
 
@@ -58,25 +48,29 @@ module.exports = {
 
   validate: function(h, t) {
 
-    if (does.nothing(h)) {
-      return;
-    }
+    // Make sure the link exists
+    if (does.nothing(h)) { return;}
 
-    var hrefURL = parse(h);
-
-    if (!hrefURL.pathname || hrefURL.pathname === '/') {
-      return;
-    }
-
-    var origURL = parse(t),
+    var hrefURL = parse(h),
+        origURL = parse(t),
         a = remove.protocol(hrefURL),
         b = remove.protocol(origURL),
         href = hrefURL.href;
 
     if (does.stringHaveMatch(a, b)) {
+      if (!hrefURL.pathname || hrefURL.pathname === '/') {
+        return a;
+      }
       href = hrefURL.pathname;
       href = this.cleanPath(href);
-      return a.replace(hrefURL.pathname, '') + '/' + href;
+
+      console.log(href);
+
+      if (href && does.haveAcceptableFile(href)) {
+        return a.replace(hrefURL.pathname, '') + '/' + href;
+      }
+
+      return;
     }
 
     if (!this.isInternalHTML(hrefURL, origURL)) {
@@ -92,7 +86,6 @@ module.exports = {
     console.error('href', href);
 
     if (does.haveAcceptableFile(href)) {
-      return remove.protocol(hrefURL) + '/' + href;
       return this.composeNewLink(href, hrefURL);
     }
   },
