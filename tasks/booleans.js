@@ -22,7 +22,15 @@ module.exports = {
     return (a.includes(b) || b.includes(a));
   },
 
-  haveAcceptableFile: function(path) {
+  haveValidInternalFile: function(url) {
+    if ( ! url.hostname.includes('.')
+      || ! url.hostname.includes('./')
+      || this.haveValidFile(url.pathname)) {
+      return true;
+    }
+  },
+
+  haveValidFile: function(path) {
     return (
       !  path.includes('.')
       || path.includes('.htm')

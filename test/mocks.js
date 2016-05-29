@@ -75,26 +75,13 @@ module.exports = {
     }
   ],
 
-  linksPaths: [
-    '',
-    '',
-    'in/emilykarp',
-    'emilykarp/',
-    'erkarp/',
-    ''
-  ],
   relativePaths: [
     '../hello',
     '/link_two',
     '../../test-link',
     './anotherTest'
   ],
-  validatedPaths: [
-    'hello',
-    'link_two',
-    'test-link',
-    'anotherTest'
-  ],
+
   matchingAbsLinks: [
     'emilykarp.com',
     'www.emilykarp.com/',
@@ -102,13 +89,7 @@ module.exports = {
     'https://emilykarp.com/info',
     'wd3.emilykarp.com/hello.html'
   ],
-  validatedAbsolutes: [
-    '',
-    '',
-    '',
-    'info',
-    'hello.html'
-  ],
+
   externalLinks: [
     'external.com',
     'www.external.com',

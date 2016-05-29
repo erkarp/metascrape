@@ -16,13 +16,6 @@ module.exports = {
     return obj;
   },
 
-  isInternalHTML: function(hUrl, oUrl) {
-    if (!hUrl.hostname.includes('.' || './')
-      || does.haveAcceptableFile(oUrl.pathname)) {
-      return true;
-    }
-  },
-
   cleanPath: function(href) {
 
     href = remove.hash(href);
@@ -57,25 +50,33 @@ module.exports = {
         b = remove.protocol(origURL),
         href = hrefURL.href;
 
+
+    //  Handle links with matching hostnames
+
     if (does.stringHaveMatch(a, b)) {
+
       if (!hrefURL.pathname || hrefURL.pathname === '/') {
         return a;
       }
+
       href = hrefURL.pathname;
       href = this.cleanPath(href);
 
-      console.log(href);
-
-      if (href && does.haveAcceptableFile(href)) {
+      if (href && does.haveValidFile(href)) {
         return a.replace(hrefURL.pathname, '') + '/' + href;
       }
-
       return;
     }
 
-    if (!this.isInternalHTML(hrefURL, origURL)) {
+
+    //  Return undefined for non-internal links
+
+    if (!does.haveValidInternalFile(hrefURL)) {
       return;
     }
+
+
+    // Handle relative paths
 
     href = this.cleanPath(href);
 
@@ -85,74 +86,9 @@ module.exports = {
 
     console.error('href', href);
 
-    if (does.haveAcceptableFile(href)) {
+    if (does.haveValidFile(href)) {
       return this.composeNewLink(href, hrefURL);
     }
-  },
-
-  links: function(html, url) {
-    if (html.length  <= 0 || typeof url !== 'string') {
-      return;
-    }
-    var r = /href="(.*)" /.exec(html);
-
-    if (r != null && r != undefined) {
-        if (this.metalist.indexOf(r[1]) == -1 && this.validateLink(r[1], url)) {
-
-          this.metalist.push({
-            url: r[1]
-          });
-
-        }
-        sub = html.substr(r[1].length);
-        match = this.links(sub, url);2
-    }
-  },
-
-  removeDomainAddress: function(link, url) {
-    var domains = ['.co', '.org', '.net', '.co', '.uk', '.me', '.io'];
-
-    if (link.indexOf(url) > -1) {
-      var rm = link.substr(0, link.indexOf(url)+url.length+1);
-      return link.replace(rm, '');
-    }
-
-    for (var i=0; i<domains.length; i++) {
-      if (link.indexOf(domains[i]) > -1) {
-        return;
-      }
-    }
-    return link;
-  },
-
-  removeLinkRelativity: function(link) {
-    if (link.charAt(0) === '/' || link.charAt(0) === '.') {
-      link = this.removeLinkRelativity(link.substr(1));
-    }
-    return link;
-  },
-
-  checkLinkExtension: function(link) {
-    var extensions = ['.html', '.txt', '.pdf'];
-
-    for (var i=0; i<extensions.length; i++) {
-      if (link.includes(extensions[i])) {
-        return link;
-      }
-    }
-  },
-
-  validateLink: function(link, url) {
-    if (link.length < 2 || link.indexOf('mailto:') > -1 ) {
-      return;
-    }
-
-    link = this.removeDomainAddress(link, url);
-    if (link) {
-      link = this.reduceLinkToPath(link);
-      if (link) {
-        return this.removeLinkRelativity(link);
-      }
-    }
   }
+
 }

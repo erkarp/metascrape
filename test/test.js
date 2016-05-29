@@ -22,6 +22,8 @@ describe('html file return and parse', function () {
 
 });
 
+
+
 describe('VALIDATION HELPER FUNCTIONS', function() {
 
   it('check if "http://www.same-domain.com" is internal', function() {
@@ -45,15 +47,10 @@ describe('VALIDATION HELPER FUNCTIONS', function() {
   });
 
 });
-/*
-describe('HIGHER LEVEL Validation Helper Functions', function() {
 
-  it( )
 
-});
-*/
 
-describe('LINK VALIDATION', function() {
+describe('Domain Match', function() {
 
   mock.sameDomain.forEach(function(linkObj, i) {
     it(i+' - checking '+mock.sameDomain[i].href, function() {
@@ -65,82 +62,34 @@ describe('LINK VALIDATION', function() {
 });
 
 
-describe('DEPRECIATED -- link mankipulation functions', function() {
 
-  it('removeLinkRelativity fn', function() {
-    var links = mock.relativePaths,
-        valid = mock.validatedPaths;
-
-    for (var i=0; i<links.length; i++) {
-      var part = scrape.removeLinkRelativity(links[i]);
-      expect(part).to.equal(valid[i]);
-    }
+describe('External Domain', function() {
+  it('returns undefined for external links', function() {
+    expect(scrape.validate('http://example.com', check)).to.be.undefined;
+    expect(scrape.validate('www.example.com', check)).to.be.undefined;
+    expect(scrape.validate('sample.com', check)).to.be.undefined;
+    expect(scrape.validate('hello.co.uk', check)).to.be.undefined;
+    expect(scrape.validate('example.info/index', check)).to.be.undefined;
   });
 
-  it('checkLinkExtension fn', function() {
-    expect(scrape.checkLinkExtension(mock.node.path)).to.be.a('string');
-    expect(scrape.checkLinkExtension(mock.links[2])).to.equal(undefined);
-  });
+  it('returns undefined (links from mocks)', function() {
 
-  it('removeDomainAddress for externalLinks', function() {
-    var links = mock.externalLinks,
-        url = mock.url;
+    mock.externalLinks.forEach(function(linkObj, i) {
+      it(i+' - checking '+mock.externalLinks[i].href, function() {
 
-    for (var i=0; i<links.length; i++) {
-      expect(scrape.removeDomainAddress(links[i], url)).to.equal(undefined);
-    }
-  });
+        expect(scrape.validate(mock.externalLinks[i].href, check))
+          .to.be.undefined;
 
-  it('removeDomainAddress for matchingAbsLinks', function() {
-    var links = mock.matchingAbsLinks,
-        valid = mock.validatedAbsolutes,
-        url = mock.url;
+      });
+    });
 
-    for (var i=0; i<links.length; i++) {
-      var validated = scrape.removeDomainAddress(links[i], url);
-      expect(validated).to.equal(valid[i]);
-    }
-  });
+  })
 
 });
 
-/*
-describe('link validation', function() {
-  it('for mock.links', function() {
-    var links = mock.links,
-        url = mock.url;
 
-    for (var i=0; i<links.length; i++) {
-      var validated = scrape.validateLink(links[i], url);
-      expect(validated).to.equal('' || undefined);
-    }
-  });
 
-  it('for relativePaths', function() {
-    var links = mock.relativePaths,
-        url = mock.url;
 
-    for (var i=0; i<links.length; i++) {
-      var validated = scrape.validateLink(links[i], url);
-      expect(validated).to.equal(mock.validatedPaths[i]);
-    }
-  });
+describe('Relative Paths', function() {
 
-  it('for externalLinks', function() {
-    var links = mock.externalLinks,
-        url = mock.url;
-
-    for (var i=0; i<links.length; i++) {
-      var validated = scrape.validateLink(links[i], url);
-      expect(validated).to.equal(undefined);
-    }
-  })
-})
-
-  5. metadata.alltrue(fn - typeof i == obj)
-
-  6. byId(mock.meta id) == mock.node.id
-
-  7, 8. FROM_USER - mock.path
-    metalist == mock.meta
-*/
+});
