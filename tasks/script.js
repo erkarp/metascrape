@@ -2,8 +2,10 @@ var express = require('express');
 var request = require('request');
 var cheerio = require('cheerio');
 var parse = require('url-parse');
+var remove = require('./remove');
+var does = require('./booleans');
 var clean = require('./unescape');
-var router = express.Router();
+var router = express.Router()
 
 module.exports = {
 
@@ -14,72 +16,8 @@ module.exports = {
     return obj;
   },
 
-  numberOfDots: function(host) {
-    return host.replace(/[^.]/g, "").length;
-  },
-
-
-  startsAtRoot: function(link) {
-    return link[0] === '/';
-  },
-
-  removeLeadingSlash: function(domain) {
-    var hasLeadingSlash = this.startsAtRoot(domain);
-    console.log(hasLeadingSlash, domain);
-    return hasLeadingSlash ? domain.slice(1) : domain;
-  },
-
-  removeTrailingSlash: function(href) {
-    var length = href.length;
-
-    return href.lastIndexOf('/') === length ?
-           href.slice(0, length) : href;
-  },
-
-
-  removeHash: function(href) {
-    var hash = href.indexOf('#');
-
-    if (hash > -1) {
-      href = href.slice(0, hash);
-    }
-
-    if (href.length > 0) {
-      return href;
-    }
-  },
-
-
-  linkClimbsDir: function(link) {
-    return  link.includes('./') || link.includes('..');
-  },
-
   replaceDirStep: function(link, pathPiece) {
     return link.replace(/\.\.\/(?=[^.]*$)/, pathPiece);
-  },
-
-  removeRelativity: function(link, url) {
-
-    if (this.linkClimbsDir(link)) {
-      var dir = url.pathname.split('/'),
-        count = 0;
-
-      console.log('IN removeRelativity', link, dir);
-      while (link.includes('../')) {
-        link.replace(link, dir[dir.length-1]);
-        count++;
-      }
-      link.replace('./', '');
-      //count back segments from url.pathname
-      dir = dir.slice(0, dir.length-count);
-      return url.hostname + '/' + dir.join('/');
-    }
-    return link;
-
-  },
-
-  domainMatch: function(linkHost, thisHost) {
-    return (linkHost.includes(thisHost) || linkHost.includes(thisHost));
   },
 
   removeMatchingHostname: function(text, url) {
@@ -90,55 +28,72 @@ module.exports = {
     }
   },
 
-  acceptableFileExt: function(path) {
-    return (!path.includes('.') ||
-      path.includes('.html' || '.php' || '.xml' || '.asp'));
-  },
-
   isInternalHTML: function(hUrl, oUrl) {
     if (!hUrl.hostname.includes('.' || './')
-      || this.acceptableFileExt(oUrl.pathname)) {
+      || does.haveAcceptableFile(oUrl.pathname)) {
       return true;
     }
   },
 
-  composeNewLink: function(href, text, url) {
-    if (url.pathname) {
-      return text.replace(url.pathname, '/' + href);
-    }
-    return text + '/' + href;
+  cleanPath: function(href) {
+
+    href = remove.trailingSlash(href);
+    href = remove.leadingSlash(href);
+    if (!href) { return; }
+
+    href = remove.hash(href);
+    if (!href) { return; }
+
+    return href;
   },
 
-  validate: function(href, text) {
-    var origURL = parse(text),
-        hrefURL = parse(href);
+  composeNewLink: function(href, hUrl) {
+    if (hUrl.pathname) {
+      console.log('pathname', hUrl.pathname);
+      console.log(hUrl.hostname + hUrl.pathname);
+      return hUrl.hostname + hUrl.pathname;
+    }
+    return hUrl.href + '/' + href;
+  },
 
-        console.log(hrefURL);
-    href = this.removeMatchingHostname(href, origURL);
-    href = this.removeTrailingSlash(href);
+  validate: function(h, t) {
 
-    if (!href || !this.isInternalHTML(hrefURL, origURL)) {
-    console.log('it\'s not internal', href, hrefURL.hostname);
+    if (does.nothing(h)) {
       return;
     }
 
-    href = this.removeLeadingSlash(href);
-    if (!href) {
-    console.log('after removed leading slash', href);
-    return; }
+    var hrefURL = parse(h);
 
-    href = this.removeRelativity(href, origURL);
-    if (!href) {
-    console.log('after removed relativity', href);
-    return; }
+    if (!hrefURL.pathname || hrefURL.pathname === '/') {
+      return;
+    }
 
-    href = this.removeHash(href);
-    if (!href) {
-    console.log('after removed hash', href);
-    return; }
+    var origURL = parse(t),
+        a = remove.protocol(hrefURL),
+        b = remove.protocol(origURL),
+        href = hrefURL.href;
 
-    if (this.acceptableFileExt(href)) {
-      return this.composeNewLink(href, text, origURL);
+    if (does.stringHaveMatch(a, b)) {
+      href = hrefURL.pathname;
+      href = this.cleanPath(href);
+      return a.replace(hrefURL.pathname, '') + '/' + href;
+    }
+
+    if (!this.isInternalHTML(hrefURL, origURL)) {
+      return;
+    }
+
+    href = this.cleanPath(href);
+
+    if (does.linkClimbDir(href)) {
+      href = remove.relativity(href, origURL);
+    }
+
+    console.error('href', href);
+
+    if (does.haveAcceptableFile(href)) {
+      return remove.protocol(hrefURL) + '/' + href;
+      return this.composeNewLink(href, hrefURL);
     }
   },
 

@@ -2,6 +2,8 @@ var fs = require('fs'),
     request = require('supertest'),
     expect = require('chai').expect,
     scrape = require('./../tasks/script'),
+    remove = require('./../tasks/remove'),
+    does = require('./../tasks/booleans'),
     cheerio = require("cheerio"),
     parse = require('url-parse'),
     mock = require('./mocks');
@@ -29,21 +31,17 @@ describe('VALIDATION HELPER FUNCTIONS', function() {
 
   it('should return everything up to "#"', function() {
     var linkWithHash = check + '#hash-value';
-    expect(scrape.removeHash(linkWithHash)).to.equal(check);
-  });      
-
-  it('count the numberOfDots', function() {
-    expect(scrape.numberOfDots(check)).to.equal(2);
+    expect(remove.hash(linkWithHash)).to.equal(check);
   });
 
   it('does linkClimbsDir', function() {
-    expect(scrape.linkClimbsDir(check)).to.not.be.true;
-    expect(scrape.linkClimbsDir('../utils.js')).to.be.true;
+    expect(does.linkClimbDir(check)).to.not.be.true;
+    expect(does.linkClimbDir('../utils.js')).to.be.true;
   });
 
   it('check if link startsAtRoot', function() {
-    expect(scrape.startsAtRoot(check)).to.not.be.true;
-    expect(scrape.startsAtRoot('/about.html')).to.be.true;
+    expect(does.startAtRoot(check)).to.not.be.true;
+    expect(does.startAtRoot('/about.html')).to.be.true;
   });
 
 });
