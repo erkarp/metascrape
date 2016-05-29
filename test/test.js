@@ -87,4 +87,49 @@ describe('External Domain', function() {
 
 describe('Relative Paths', function() {
 
+    it('goes back to root', function() {
+      var newlink = scrape.validate('/hello', 'www.sample-link.com');
+      expect(newlink)
+        .to.equal('sample-link.com/hello');
+        console.log(newlink, '~~~~');
+    });
+
+    it('removes "./"', function() {
+      expect(scrape.validate('/hello', 'www.sample-link.com/src/big/'))
+        .to.equal('sample-link.com/hello');
+    });
+
+    it('../hello', function() {
+      expect(scrape.validate('../hello', 'www.sample-link.com/src/to'))
+        .to.equal('sample-link.com/src/hello');
+    });
+
+    it('../../hello', function() {
+      expect(scrape.validate('../../hello', 'www.sample-link.com/one/two'))
+        .to.equal('sample-link.com/hello');
+    });
+
+    it('../../hello (II)', function() {
+      expect(scrape.validate('../../hello', 'www.sample-link.com/one/two/three'))
+        .to.equal('sample-link.com/one/hello');
+    });
+
+    it('../../../hello', function() {
+      expect(scrape.validate('../../../hello', 'www.sample-link.com/one/two/three/four/five/six'))
+        .to.equal('sample-link.com/one/two/three/hello');
+    });
+
+    it('../../../hello with 7 directories', function() {
+      expect(scrape.validate('../../../hello',
+        'www.sample-link.com/one/two/three/four/five/six/seven'))
+        .to.equal('sample-link.com/one/two/three/four/hello');
+    });
+
+
+    it('../hello with 7 directories', function() {
+      expect(scrape.validate('../hello',
+        'www.sample-link.com/one/two/three/four/five/six/seven'))
+        .to.equal('sample-link.com/one/two/three/four/five/six/hello');
+    });
+
 });

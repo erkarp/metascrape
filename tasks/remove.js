@@ -1,9 +1,7 @@
 
 var does = require('./booleans');
 
-var replaceDirStep = function(link, pathPiece) {
-  return link.replace(/\.\.\/(?=[^.]*$)/, pathPiece);
-};
+
 
 
 module.exports = {
@@ -40,17 +38,17 @@ module.exports = {
 
     relativity: function(link, url) {
 
-      var dir = url.pathname.split('/'),
-        count = 0;
+      var directory = url.pathname.split('/'),
+          relative = link.split('/'),
+          file = relative.reverse()[0];
 
-      console.log('IN removeRelativity', link, dir);
-      while (link.includes('../')) {
-        link.replace(link, dir[dir.length-1]);
-        count++;
-      }
-      link.replace('./', '');
-      //count back segments from url.pathname
-      dir = dir.slice(0, dir.length-count);
-      return url.hostname + '/' + dir.join('/');
+      var count = relative.filter(function(i) {
+        return i === '..';
+      }).length+1;
+
+
+      var newdir = directory.splice(1, directory.length-count);
+      newdir.push(file);
+      return newdir.join('/');
     }
 }

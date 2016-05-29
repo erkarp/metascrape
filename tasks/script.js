@@ -28,26 +28,36 @@ module.exports = {
     return remove.trailingSlash(href);
   },
 
-  composeNewLink: function(href, hUrl) {
-    if (hUrl.pathname) {
-      console.log('pathname', hUrl.pathname);
-      console.log(hUrl.hostname + hUrl.pathname);
-      return hUrl.hostname + hUrl.pathname;
+  composeNewLink: function(href, url) {
+    if (url.hostname) {
+      return url.hostname + href;
     }
-    return hUrl.href + '/' + href;
   },
+
+
+  // Returns either a valid link (string) or undefined
 
   validate: function(h, t) {
 
+    // h = Link to be validated
+    // t = URL from user input
+
     // Make sure the link exists
-    if (does.nothing(h)) { return;}
+    if (does.nothing(h)) { return; }
+
 
     var hrefURL = parse(h),
         origURL = parse(t),
         a = remove.protocol(hrefURL),
         b = remove.protocol(origURL),
+        root = b.replace(origURL.pathname, ''),
         href = hrefURL.href;
 
+
+    //
+    if (does.startAtRoot(h)) {
+      return root + remove.hash(h);
+    }
 
     //  Handle links with matching hostnames
     if (does.stringHaveMatch(a, b)) {
@@ -67,10 +77,11 @@ module.exports = {
 
 
     //  Return undefined for non-internal links
-    if (!does.haveValidInternalFile(hrefURL)) {
-      return;
-    }
+    if (does.haveExternalHost(hrefURL)) { return; }
 
+
+
+    console.log(a);
 
     // Handle relative paths
     href = this.cleanPath(href);
@@ -79,11 +90,10 @@ module.exports = {
       href = remove.relativity(href, origURL);
     }
 
-    console.error('href', href);
+    console.error('HREF', href);
+    return root + '/' + href;
 
-    if (does.haveValidFile(href)) {
-      return this.composeNewLink(href, hrefURL);
-    }
+
   }
 
 }
