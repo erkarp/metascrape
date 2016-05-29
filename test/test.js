@@ -26,11 +26,6 @@ describe('html file return and parse', function () {
 
 describe('VALIDATION HELPER FUNCTIONS', function() {
 
-  it('check if "http://www.same-domain.com" is internal', function() {
-    var shouldBeUndefined = scrape.isInternalHTML(parse(check).hostname);
-    expect(shouldBeUndefined).to.not.be.true;
-  });
-
   it('should return everything up to "#"', function() {
     var linkWithHash = check + '#hash-value';
     expect(remove.hash(linkWithHash)).to.equal(check);

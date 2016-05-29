@@ -25,9 +25,7 @@ module.exports = {
       return href;
     }
 
-    href = remove.trailingSlash(href);
-    href = remove.leadingSlash(href);
-    return href;
+    return remove.trailingSlash(href);
   },
 
   composeNewLink: function(href, hUrl) {
@@ -52,7 +50,6 @@ module.exports = {
 
 
     //  Handle links with matching hostnames
-
     if (does.stringHaveMatch(a, b)) {
 
       if (!hrefURL.pathname || hrefURL.pathname === '/') {
@@ -63,21 +60,19 @@ module.exports = {
       href = this.cleanPath(href);
 
       if (href && does.haveValidFile(href)) {
-        return a.replace(hrefURL.pathname, '') + '/' + href;
+        return a.replace(hrefURL.pathname, '') + href;
       }
       return;
     }
 
 
     //  Return undefined for non-internal links
-
     if (!does.haveValidInternalFile(hrefURL)) {
       return;
     }
 
 
     // Handle relative paths
-
     href = this.cleanPath(href);
 
     if (does.linkClimbDir(href)) {
