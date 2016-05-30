@@ -26,52 +26,52 @@ module.exports = {
   sameDomain: [
     {
       href: 'http://www.same-domain.com',
-      result: 'same-domain.com'
+      result: 'http://www.same-domain.com/'
     }, {
       href: 'http://www.same-domain.com/',
-      result: 'same-domain.com/'
+      result: 'http://www.same-domain.com/'
     }, {
       href: 'http://www.same-domain.com/index',
-      result: 'same-domain.com/index'
+      result: 'http://www.same-domain.com/index'
     }, {
       href: 'http://www.same-domain.com/index.html',
-      result: 'same-domain.com/index.html'
+      result: 'http://www.same-domain.com/index.html'
     }, {
       href: 'http://www.same-domain.com/index.pdf',
       result: undefined
     }, {
       href: 'http://www.same-domain.com/indexdir/index',
-      result: 'same-domain.com/indexdir/index'
+      result: 'http://www.same-domain.com/indexdir/index'
     }, {
       href: 'http://www.same-domain.com/indexdir/index.html',
-      result: 'same-domain.com/indexdir/index.html'
+      result: 'http://www.same-domain.com/indexdir/index.html'
     }, {
       href: 'http://www.same-domain.com/indexdir/anotherdir/index.html',
-      result: 'same-domain.com/indexdir/anotherdir/index.html'
+      result: 'http://www.same-domain.com/indexdir/anotherdir/index.html'
     }, {
       href: 'http://same-domain.com',
-      result: 'same-domain.com'
+      result: 'http://same-domain.com/'
     }, {
       href: 'http://same-domain.com/index',
-      result: 'same-domain.com/index'
+      result: 'http://same-domain.com/index'
     }, {
       href: 'http://same-domain.com/index',
-      result: 'same-domain.com/index'
+      result: 'http://same-domain.com/index'
     }, {
       href: 'http://same-domain.com/index.php',
-      result: 'same-domain.com/index.php'
+      result: 'http://same-domain.com/index.php'
     }, {
       href: 'http://same-domain.com/index.pdf',
       result: undefined
     }, {
       href: 'http://same-domain.com/indexdir/index',
-      result: 'same-domain.com/indexdir/index'
+      result: 'http://same-domain.com/indexdir/index'
     }, {
       href: 'http://same-domain.com/indexdir/index.html',
-      result: 'same-domain.com/indexdir/index.html'
+      result: 'http://same-domain.com/indexdir/index.html'
     }, {
       href: 'http://same-domain.com/indexdir/anotherdir/index',
-      result: 'same-domain.com/indexdir/anotherdir/index'
+      result: 'http://same-domain.com/indexdir/anotherdir/index'
     }
   ],
 

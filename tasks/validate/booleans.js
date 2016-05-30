@@ -3,8 +3,8 @@ module.exports = {
   nothing: function(href) {
     return (
       ! href ||
-      href === '#' ||
       href === '/' ||
+      href[0] === '#' ||
       href.includes('mailto')
     )
   },
@@ -21,15 +21,11 @@ module.exports = {
     return (a.includes(b) || b.includes(a));
   },
 
-  haveExternalHost: function(url) {
-    return url.hostname.length > 2;
-  },
-
   haveValidInternalFile: function(url) {
     return (
-       ! url.hostname.includes('.')
-      || url.hostname.includes('./')
-      || this.haveValidFile(url.pathname)
+       ! url.includes('.')
+      || url.includes('./')
+      || this.haveValidFile(url)
     );
   },
 

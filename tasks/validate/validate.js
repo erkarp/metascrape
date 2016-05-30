@@ -14,6 +14,15 @@ var util = {
     }
 
     return remove.trailingSlash(href);
+  },
+
+  composeUrl: function(href, url) {
+
+    var protocol = url.protocol ? url.protocol : 'http://',
+        slashes = url.slashes ? '//' : '',
+        href = remove.leadingSlash(href);
+
+    return protocol + slashes + url.hostname + '/' + href;
   }
 };
 
@@ -28,49 +37,52 @@ var validate = {
     // Make sure the link exists
     if (does.nothing(h)) { return; }
 
-
     var hrefURL = parse(h),
         origURL = parse(t),
         a = remove.protocol(hrefURL),
         b = remove.protocol(origURL),
-        root = b.replace(origURL.pathname, ''),
         href = hrefURL.href;
 
-
-    //
     if (does.startAtRoot(h)) {
-      return root + remove.hash(h);
+      return util.composeUrl(remove.hash(h), origURL);
     }
+
+
 
     //  Handle links with matching hostnames
     if (does.stringHaveMatch(a, b)) {
 
-      if (!hrefURL.pathname || hrefURL.pathname === '/') {
-        return a;
+      if (!hrefURL.pathname) {
+        return util.composeUrl('', hrefURL)
+      }
+      if (hrefURL.pathname === '/') {
+        return util.composeUrl('/', hrefURL);
       }
 
       href = hrefURL.pathname;
       href = util.cleanPath(href);
 
       if (href && does.haveValidFile(href)) {
-        return root + href;
+        return util.composeUrl(href, hrefURL);
       }
       return;
     }
 
 
     //  Return undefined for non-internal links
-    if (does.haveExternalHost(hrefURL)) { return; }
+    if (! does.haveValidInternalFile(href)) { return; }
+
 
 
     // Handle relative paths
     href = util.cleanPath(href);
 
-    if (does.linkClimbDir(href)) {
+    if (href && does.linkClimbDir(href)) {
       href = remove.relativity(href, origURL);
     }
 
-    return root + '/' + href;
+
+    return util.composeUrl(href, origURL);
   }
 };
 

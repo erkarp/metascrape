@@ -16,7 +16,8 @@ module.exports = {
 
 
   validate: function(href, page) {
-    return validate.link(href, page);
+    var validated = validate.link(href, page);
+    if (validated) { return validated; }
   }
 
 }

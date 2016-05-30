@@ -6,8 +6,6 @@ var utils = require('../tasks/script.js');
 var router = express.Router();
 
 
-
-
 function parseCheerioForLinks(c, text) {
   var parts = text.split('/'),
     url = parse(text),
@@ -18,16 +16,13 @@ function parseCheerioForLinks(c, text) {
 
   c('a').each(function(i, elem) {
     var href = c(this).attr('href');
+    console.log('about to validate link: ', href);
 
-    if (!href || href.includes('mailto')) {
-      return;
-    }
-
-    link = utils.validate(link);
-    console.log('about to push link: ', href, text);
+    var link = utils.validate(href, text);
+    console.log('about to push link: ', link);
 
     if (link) {
-      links.push({ url: href });
+      links.push({ url: link });
     }
   });
   return links;
