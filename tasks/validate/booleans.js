@@ -1,4 +1,3 @@
-
 module.exports = {
 
   nothing: function(href) {
@@ -23,7 +22,7 @@ module.exports = {
   },
 
   haveExternalHost: function(url) {
-    return url.hostname.length > 2;  
+    return url.hostname.length > 2;
   },
 
   haveValidInternalFile: function(url) {

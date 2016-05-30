@@ -1,8 +1,4 @@
-
 var does = require('./booleans');
-
-
-
 
 module.exports = {
 
@@ -15,7 +11,7 @@ module.exports = {
       if (href.length > 0) {
         return href;
       }
-    },
+    },  
 
     leadingSlash: function(domain) {
       var hasLeadingSlash = does.startAtRoot(domain);
@@ -35,6 +31,7 @@ module.exports = {
         .replace('www.', '')
         .replace('//', '');
     },
+
 
     relativity: function(link, url) {
 
