@@ -1,9 +1,12 @@
 var express   = require('express');
 var request   = require('request');
 var cheerio   = require('cheerio');
+var parse     = require('url-parse');
 var clean     = require('./unescape');
 var validate  = require('./validate/validate');
-var router    = express.Router()
+var remove    = require('./validate/remove');
+var utils     = require('./utils');
+var router    = express.Router();
 
 module.exports = {
 
@@ -14,10 +17,32 @@ module.exports = {
     return obj;
   },
 
+  removeHash: function(href) {
+    var hash = href.indexOf('#');
+    if (hash > -1) {
+      href = href.slice(0, hash);
+    }
 
-  validate: function(href, page) {
-    var validated = validate.link(href, page);
-    if (validated) { return validated; }
+    if (href.length > 0) {
+      return href;
+    }
+  },
+
+  checkList: function(list, origURL) {
+
+    var url = parse(origURL),
+        domain = remove.protocol(url),
+        input = { url: url, domain: domain },
+        links = utils.sortAndFilter(list);
+
+    links = links.reduce(function(arr, link, i) {
+      var validated = validate.link(link, input);
+      if (validated) { arr.push(validated); }
+      return arr;
+    },[]);
+
+    console.log('LINKS ~~ ', links);
+    return links;
   }
 
 }

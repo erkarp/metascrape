@@ -4,17 +4,15 @@ var remove = require('./remove');
 
 
 var util = {
+
   cleanPath: function(href) {
 
-    href = remove.hash(href);
     if (!href) { return; }
-
-    if (href.length === 1) {
-      return href;
-    }
-
+    if (href.length === 1) { return href;}
+    
     return remove.trailingSlash(href);
   },
+
 
   composeUrl: function(href, url) {
 
@@ -24,6 +22,7 @@ var util = {
 
     return protocol + slashes + url.hostname + '/' + href;
   }
+
 };
 
 
@@ -32,24 +31,25 @@ var util = {
 
 var validate = {
 
-  link: function(h, t) {
+  link: function(h, input) {
 
     // Make sure the link exists
     if (does.nothing(h)) { return; }
 
     var hrefURL = parse(h),
-        origURL = parse(t),
+        origURL = input.url,
         a = remove.protocol(hrefURL),
-        b = remove.protocol(origURL),
+        b = input.domain,
         href = hrefURL.href;
 
     if (does.startAtRoot(h)) {
-      return util.composeUrl(remove.hash(h), origURL);
+      return util.composeUrl(h, origURL);
     }
 
 
 
     //  Handle links with matching hostnames
+    console.log(a, b);
     if (does.stringHaveMatch(a, b)) {
 
       if (!hrefURL.pathname) {

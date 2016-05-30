@@ -9,7 +9,8 @@ module.exports = function(safe) {
      .replace(/&quot;/g, "\"")
      .replace(/&#x2019;/g, '\'')
      .replace(/&#039;/g, "'")
-     .replace(/&apos;/g, "'");
+     .replace(/&apos;/g, "'")
+     .replace(/&#x2013;/, "-");
    }
 
 }

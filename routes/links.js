@@ -15,36 +15,19 @@ function parseCheerioForLinks(c, text) {
   console.log(url, text);
 
   c('a').each(function(i, elem) {
+
     var href = c(this).attr('href');
-    console.log('about to validate link: ', href);
 
-    var link = utils.validate(href, text);
-    console.log('about to push link: ', link);
-
-    if (link) {
-      links.push({ url: link });
+    if (href) {
+      href = utils.removeHash(href);
+      if (href) { links.push(href) }
     }
   });
-  return links;
+
+  return utils.checkList(links, text);
 };
 
-function sortAndFilter(list) {
 
-  return list.sort(function(a,b) {
-    return (a.url > b.url) ? 1 : ((b.url > a.url) ? -1 : 0);
-  })
-
-  .filter(function(elem, i, arr) {
-    if (i === 0) { return true; }
-
-    if (arr[i].url === arr[i-1].url ||
-      arr[i].url === arr[i-1].url + '/') {
-        return false;
-      }
-
-    return true;
-  });
-}
 
 function getCheerio(res, url, callback) {
   request(url, function(error, response, body) {
@@ -65,20 +48,21 @@ router.post('/', function(req, res, next) {
 
     getCheerio(res, text, function($, res) {
 
-      var list = parseCheerioForLinks($, text),
-          links = sortAndFilter(list),
+      var links = parseCheerioForLinks($, text),
           count = 0;
 
 
       function subLinks() {
         if (links[count]) {
-          getCheerio(res, links[count].url, function($, rest) {
+          getCheerio(res, links[count], function($, rest) {
 
-            links[count] = utils.getMetaData($, links[count]);
+            links[count] = utils.getMetaData($, {
+              url: links[count]
+            });
 
             if (links[++count]) {
               console.log('Count: '+count);
-              getCheerio(res, links[count].url, subLinks, links, count);
+              getCheerio(res, links[count], subLinks, links, count);
             }
             else {
               res.render('links', {

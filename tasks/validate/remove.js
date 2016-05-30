@@ -2,17 +2,6 @@ var does = require('./booleans');
 
 module.exports = {
 
-    hash: function(href) {
-      var hash = href.indexOf('#');
-      if (hash > -1) {
-        href = href.slice(0, hash);
-      }
-
-      if (href.length > 0) {
-        return href;
-      }
-    },  
-
     leadingSlash: function(domain) {
       var hasLeadingSlash = does.startAtRoot(domain);
       return hasLeadingSlash ? domain.slice(1) : domain;
