@@ -23,15 +23,17 @@ module.exports = {
 
 
     relativity: function(link, url) {
+  //    console.log('RELATIVITY', url, link);
 
       var directory = url.pathname.split('/'),
           relative = link.split('/'),
-          file = relative.reverse()[0];
+          file = link.replace(/\.\.\/(?=[^.]*$)/, '');
 
       var count = relative.filter(function(i) {
         return i === '..';
       }).length+1;
 
+  //    console.log('directory', directory);
 
       var newdir = directory.splice(1, directory.length-count);
       newdir.push(file);

@@ -3,6 +3,7 @@ var request = require("request");
 var cheerio = require("cheerio");
 var parse = require('url-parse');
 var utils = require('../tasks/script.js');
+var find  = require('../tasks/find.js');
 var router = express.Router();
 
 
@@ -56,9 +57,10 @@ router.post('/', function(req, res, next) {
         if (links[count]) {
           getCheerio(res, links[count], function($, rest) {
 
-            links[count] = utils.getMetaData($, {
+            links[count] = find.metaData($, {
               url: links[count]
             });
+            links[count] = find.elements($, links[count], ['h1']);
 
             if (links[++count]) {
               console.log('Count: '+count);

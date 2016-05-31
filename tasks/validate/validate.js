@@ -9,7 +9,7 @@ var util = {
 
     if (!href) { return; }
     if (href.length === 1) { return href;}
-    
+
     return remove.trailingSlash(href);
   },
 
@@ -77,12 +77,20 @@ var validate = {
     // Handle relative paths
     href = util.cleanPath(href);
 
-    if (href && does.linkClimbDir(href)) {
+    if (href) {
       href = remove.relativity(href, origURL);
+      return util.composeUrl(href, origURL);
     }
 
+    //  && does.linkClimbDir(href)
 
-    return util.composeUrl(href, origURL);
+
+    // Handles same folder links
+    // eg: 'about.html', NOT '/about.html'
+
+
+
+
   }
 };
 
