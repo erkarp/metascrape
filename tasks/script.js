@@ -1,5 +1,4 @@
 var parse     = require('url-parse');
-var clean     = require('./unescape');
 var validate  = require('./validate/validate');
 var remove    = require('./validate/remove');
 var utils     = require('./utils');
