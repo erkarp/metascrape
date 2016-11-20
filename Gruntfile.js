@@ -1,6 +1,7 @@
 module.exports = function(grunt) {
 
 	grunt.config.init({
+
 		sass: {
 			options: {
 				sourceMap: true
@@ -11,20 +12,21 @@ module.exports = function(grunt) {
 				}
 			}
 		},
+		
     'babel': {
-      options: {
-        sourceMap: true,
-        presets: ['react']
-      },
+      {
+				presets: [['react']]
+			},
       dist: {
         files: {
-          "public/javascripts/app.js": "public/javascripts/app.jsx"
+          "public/javascripts/app.js": "javascripts/app.jsx"
         }
       }
     },
+
 		watch: {
 		  scripts: {
-		    files: ['public/javascripts/*.jsx'],
+		    files: ['javascripts/app.jsx'],
 		    tasks: ['babel'],
 		    options: {
 		      spawn: false,
@@ -40,7 +42,6 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-sass');
 	grunt.loadNpmTasks('grunt-babel');
 	grunt.loadNpmTasks('grunt-contrib-watch');
-
 
 	grunt.registerTask('default', ['watch']);
 };
