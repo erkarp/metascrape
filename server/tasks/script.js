@@ -38,7 +38,6 @@ module.exports = {
       return arr;
     },[]);
 
-    console.log('LINKS ~~ ', links);
     return links;
   }
 

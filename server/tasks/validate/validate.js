@@ -46,10 +46,7 @@ var validate = {
       return util.composeUrl(h, origURL);
     }
 
-
-
     //  Handle links with matching hostnames
-    console.log(a, b);
     if (does.stringHaveMatch(a, b)) {
 
       if (!hrefURL.pathname) {

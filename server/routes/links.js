@@ -14,7 +14,6 @@ function parseCheerioForLinks(c, text)
     links = [];
 
   text = text.replace(new RegExp(url.pathname + '$'), '');
-  console.log(url, text);
 
   c('a').each(function(i, elem)
   {
@@ -72,7 +71,7 @@ router.post('/', function(req, res, next)
 
             if (links[++count])
             {
-              console.log('Count:', count, 'of', links.length);
+              console.log('Count:', count, 'of', links.length, '--', links[count]);
               getCheerio(res, links[count], subLinks, links, count);
             }
             else

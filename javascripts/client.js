@@ -1,69 +1,39 @@
-React = (typeof module !== 'undefined' && module.exports) ? require('react') : window.React;
+import React, { Component } from 'react'
+import { render } from 'react-dom'
 
-var LinkList = React.createClass({
 
-  render: function()
-  {
-    var links = this.props.links || []
+class UrlForm extends Component {
 
-    return (
-      <table>
-        <thead><tr><th className="span2">Slug</th></tr></thead>
-        <tbody>
-          {links.map(function(link)
-            {return (
-              <tr key={link._id}>
-                <td className="span2">{link.url}</td>
-              </tr>
-            )}
-          )}
-        </tbody>
-      </table>
-    )
-  }
-})
-
-var UrlForm = React.createClass({
-
-  render: function()
+  render()
   {
     return (
       <form action="links" method="post">
         <input type="url" name="website"/>
-        <input onclick="alert(website.hostname)" type="submit"/>
+        <input type="submit"/>
       </form>
     )
   }
-})
+}
 
 
-var Page = React.createClass({
+class Page extends Component{
 
-  getInitialState: function(ops)
+  // getInitialState: function()
+  // {
+  //   var links = this.props.links || [];
+  //   return {};
+  // },
+
+  render()
   {
-    var links = this.props.links || []
-    return {links: links}
-  },
-
-  componentDidMount: function()
-  {
-    var url = 'http://localhost:3000/messages'
-    var _this = this
-    /*
-    $.getJSON(url, function(result){
-      console.log(result)
-      if(!result || !result.length){
-        return;
-      }
-      _this.setState({ messages: result });
-    });
-    */
-  },
-
-  render: function()
-  {
-    return (<main><UrlForm></UrlForm></main>)
+    return (
+      <div>
+        <UrlForm></UrlForm> 
+      </div>
+    )
   }
-})
+}
 
-ReactDOM.render(<Page/>, document.getElementById('main'))
+
+render(<Page/>, document.getElementById('main'))
+// ReactDOM.render(<Page/>, document.getElementById('main'))

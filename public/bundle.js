@@ -55,9 +55,23 @@
 
 	React = typeof module !== 'undefined' && module.exports ? __webpack_require__(2) : window.React;
 
+	var Link = React.createClass({
+	  displayName: 'Link',
+
+
+	  render: function render() {
+	    return React.createElement('p', null);
+	  }
+	});
+
 	var LinkList = React.createClass({
 	  displayName: 'LinkList',
 
+
+	  getInitialState: function getInitialState(ops) {
+	    var links = this.props.links || [];
+	    return { links: links };
+	  },
 
 	  render: function render() {
 	    var links = this.props.links || [];
@@ -120,25 +134,14 @@
 	    return { links: links };
 	  },
 
-	  componentDidMount: function componentDidMount() {
-	    var url = 'http://localhost:3000/messages';
-	    var _this = this;
-	    /*
-	    $.getJSON(url, function(result){
-	      console.log(result)
-	      if(!result || !result.length){
-	        return;
-	      }
-	      _this.setState({ messages: result });
-	    });
-	    */
-	  },
-
 	  render: function render() {
-	    return React.createElement(
+	    return;
+	    React.createElement(
 	      'main',
 	      null,
-	      React.createElement(UrlForm, null)
+	      React.createElement(UrlForm, null),
+	      '// ',
+	      React.createElement(LinkList, { links: links })
 	    );
 	  }
 	});

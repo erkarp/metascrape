@@ -1,10 +1,14 @@
 module.exports =
 {
-  entry: ['./javascripts/client.js'],
+  entry:
+  [
+    'webpack-hot-middleware',
+    './javascripts/client.js'
+  ],
 
   output:
   {
-    path: './public',
+    path: require('path').resolve('./public'),
     filename: 'bundle.js',
     publicPath: '/'
   },
@@ -13,7 +17,6 @@ module.exports =
   {
     loaders:
     [{
-      test: /\.jsx?$/,
       loader: 'babel-loader',
       exclude: /node_modules/,
       query:
