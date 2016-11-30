@@ -6,6 +6,11 @@ var utils = require('../tasks/script.js');
 var find  = require('../tasks/find.js');
 var router = express.Router();
 
+// io.on('connection', function (socket)
+// {
+//   console.log('Connection made');
+//   socket.emit('news', { hello: 'LINKS' });
+// });
 
 function parseCheerioForLinks(c, text)
 {
@@ -42,12 +47,11 @@ function getCheerio(res, url, callback)
     {
       var $ = cheerio.load(body);
       callback($, res);
-
     }
     else
     {
       console.log("We’ve encountered an error: " + error);
-      return;
+      res.render('error');
     }
   });
 }
@@ -65,7 +69,8 @@ router.post('/', function(req, res, next)
       {
         if (links[count])
         {
-          getCheerio(res, links[count], function($, rest) {
+          getCheerio(res, links[count], function($, rest)
+          {
             links[count] = find.metaData($, {url: links[count]});
             links[count] = find.elements($, links[count], ['h1','h2']);
 

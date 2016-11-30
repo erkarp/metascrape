@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import { render } from 'react-dom'
 
 
-class UrlForm extends Component {
 
+class UrlForm extends Component
+{
   render()
   {
     return (
@@ -15,25 +16,42 @@ class UrlForm extends Component {
   }
 }
 
+class App extends Component
+{
+  constructor(props, context)
+  {
+    super(props, context)
 
-class Page extends Component{
+    this.state = {
+      testVar: 'testVALUE'
+    }
+  }
 
-  // getInitialState: function()
-  // {
-  //   var links = this.props.links || [];
-  //   return {};
-  // },
+  update(data)
+  {
+    this.setState({
+      testVar: 'Connected as of ' + data
+    })
+  }
 
   render()
   {
     return (
       <div>
-        <UrlForm></UrlForm> 
+        <UrlForm></UrlForm>
+        <h2>{this.state.testVar}</h2>
       </div>
     )
   }
 }
 
 
-render(<Page/>, document.getElementById('main'))
+var app = render(<App/>, document.getElementById('main'));
 // ReactDOM.render(<Page/>, document.getElementById('main'))
+
+var socket = io();
+socket.on('news', function (data)
+{
+  console.log(data);
+  app.update(data.hello);
+});
