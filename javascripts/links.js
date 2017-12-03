@@ -25,6 +25,7 @@ var LinkList = React.createClass({
         <thead>
           <tr><th className="span2">Slug</th></tr>
         </thead>
+
         <tbody>
           {links.map(function(link)
             {
@@ -36,3 +37,5 @@ var LinkList = React.createClass({
     )
   }
 })
+
+var links = render(<LinkList/>, document.getElementById('links'));
