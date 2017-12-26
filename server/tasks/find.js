@@ -3,7 +3,7 @@ var clean = require('./unescape');
 
 var find = {
 
-  metaData: function(c, obj)
+  metaData: function(c, obj, obj)
   {
     var desc = c('meta[name=description]').attr('content');
     obj.description = clean(desc) || null;

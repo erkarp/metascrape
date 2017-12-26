@@ -3,7 +3,7 @@ module.exports =
   entry:
   [
     'webpack-hot-middleware',
-    './javascripts/client.js'
+    './client/index'
   ],
 
   output:
@@ -21,7 +21,7 @@ module.exports =
       exclude: /node_modules/,
       query:
       {
-        presets: ['react', 'es2015']
+        presets: ['react', 'env']
       }
     }]
   }

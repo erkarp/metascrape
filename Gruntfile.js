@@ -17,19 +17,19 @@ module.exports = function(grunt) {
         'babel': {
             options: {
                 presets: [
-                    ['react']
+                    ['react'], ['env']
                 ]
             },
-            dist: {
-                files: {
-                    "public/javascripts/app.js": "javascripts/app.jsx"
-                }
-            }
+            dist: './client/*.js'
+                // files: {
+                //     "public/javascripts/app.js": "clients/App.jsx",
+                //     "public/javascripts/links.js": "javascripts/links.jsx"
+                // }
         },
 
         'watch': {
             scripts: {
-                files: ['javascripts/app.jsx'],
+                files: ['client/*'],
                 tasks: ['babel'],
                 options: {
                     spawn: false
