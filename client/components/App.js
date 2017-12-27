@@ -17,7 +17,7 @@ class UrlForm extends React.Component
 
   handleSubmit(event) {
     console.log('A url was submitted: ' + this.state.value);
-    socket.emit('submit', {url: this.state.value});
+    // socket.emit('submit', {url: this.state.value});
     event.preventDefault();
   }
 
