@@ -9,13 +9,15 @@ var webpack = require('webpack');
 var webpackDevMiddleware = require('webpack-dev-middleware');
 var webpackHotMiddleware = require('webpack-hot-middleware');
 
-var routes = require('./server/routes/index');
-var users = require('./server/routes/users');
-var links = require('./server/routes/links');
-
 var app = express();
+app.io = require('socket.io')();
+
 var config = require('./webpack.config.js');
 var compiler = webpack(config);
+
+var routes = require('./server/routes/index');
+var users = require('./server/routes/users');
+var links = require('./server/routes/links')(app.io);
 
 app.use(webpackDevMiddleware(compiler, {noInfo: true, publicPath: config.output.publicPath}));
 app.use(webpackHotMiddleware(compiler));
@@ -25,7 +27,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(cookieParser());
 app.use(bodyParser.json());

@@ -8,8 +8,11 @@ import App from './components/App.js'
 //   console.log(data); 
 // });
 
-// socket.on('counting', function (data) {
-//   consle.log('counting');
-// });
+if (socket)
+{
+	socket.on('counting', function (data) {
+	  console.log('counting', data);
+	});
+}
 
 var app = render(<App/>, document.getElementById('main'));

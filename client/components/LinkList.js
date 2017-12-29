@@ -9,6 +9,7 @@ const LinkList = (props) => {
         </thead>
 
         <tbody>
+
           {props.links.map((link, i) => {
               return (<LinkItem key={i} url={link.url}></LinkItem>)
             }

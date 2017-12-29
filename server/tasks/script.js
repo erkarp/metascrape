@@ -19,9 +19,9 @@ module.exports = {
     }
   },
 
-  checkList: function(list, origURL) {
+  checkList: function(list, link, emit) {
 
-    var url = parse(origURL),
+    var url = parse(link),
         domain = remove.protocol(url),
         links = utils.sortAndFilter(list),
         input = { url: url, domain: domain };
@@ -32,6 +32,7 @@ module.exports = {
 
       if (validated)
       {
+        emit(validated);
         arr.push(validated);
       }
 

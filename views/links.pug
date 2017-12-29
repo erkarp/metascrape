@@ -1,33 +1,39 @@
 extends layout
 
 block title 
-  title MetaScrape | #{links[0].title}
+  title MetaScrape | #{url}
   
 block content
-  .row
-    h3 #{links.length} internal links on #[i #{links[0].title || site}]
-    .pull-right
-      - var name = "MetaScrape-" 
-      - var data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({'links': links}));
-      a(href="data:"+data download="MetaScrape-"+links[0].title+".json") download JSON
-
+  //- .row
+  //-   h3 #{links.length} internal links on #[i #{links[0].title || site}]
+  //-   .pull-right
+  //-     - var name = "MetaScrape-" 
+  //-     - var data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({'links': links}));
+  //-     a(href="data:"+data download="MetaScrape-"+links[0].title+".json") download JSON
+  h5: em #{url}
   #main
 
-  .container 
-    each link in links
-      -var titleCC = link.title ? link.title.length : 0
-      -var descCC = link.description ? link.description.length : 0
-      .row.well.well-sm
-        .row
-          .col-sm-11.col-xs-10
-            h4.title #{link.title}
-          .col-sm-1.col-sx-2
-            h4 #[span(class=(10<titleCC && titleCC<65 ? 'good' : 'bad')) #{titleCC}]/65
-        .row
-          .col-sm-11.col-xs-10
-            p.description #{link.description}
-          .col-sm-1.col-sx-2
-            p #[span(class=(20<descCC && descCC<155 ? 'good' : 'bad')) #{descCC}]/155
-        .row
-          .col-sm-12
-            code #{link.url} 
+block scripts
+  script(src='https://fb.me/react-0.14.0.js')
+  script(src='https://fb.me/react-dom-0.14.0.js')  
+  script(src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.6.0/socket.io.js')
+  script(src='/bundle.js')
+
+  //- .container 
+  //-   each link in links
+  //-     -var titleCC = link.title ? link.title.length : 0
+  //-     -var descCC = link.description ? link.description.length : 0
+  //-     .row.well.well-sm
+  //-       .row
+  //-         .col-sm-11.col-xs-10
+  //-           h4.title #{link.title}
+  //-         .col-sm-1.col-sx-2
+  //-           h4 #[span(class=(10<titleCC && titleCC<65 ? 'good' : 'bad')) #{titleCC}]/65
+  //-       .row
+  //-         .col-sm-11.col-xs-10
+  //-           p.description #{link.description}
+  //-         .col-sm-1.col-sx-2
+  //-           p #[span(class=(20<descCC && descCC<155 ? 'good' : 'bad')) #{descCC}]/155
+  //-       .row
+  //-         .col-sm-12
+  //-           code #{link.url} 

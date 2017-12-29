@@ -6,38 +6,64 @@ var utils = require('../tasks/script.js');
 var find  = require('../tasks/find.js');
 var router = express.Router();
 
-function parseCheerioForLinks(c, text)
+function findLinks(text, emit)
 {
-  var parts = text.split('/'),
-    url = parse(text),
-    links = [];
+  console.log('\nfindLinks: text is\n', typeof text, text);
+  // var parts = text.split('/'),
+  //   url = parse(text),
+  //   links = [];
 
-  text = text.replace(new RegExp(url.pathname + '$'), '');
+  // text = text.replace(new RegExp(url.pathname + '$'), '');
+  var links = [];
 
-  c('a').each(function(i, elem)
+  cheerio('a', text).each(function(i, elem)
   {
-    var href = c(this).attr('href');
+    var href = cheerio(this).attr('href');
 
     if (href)
     {
       href = utils.removeHash(href);
-      if (href && !list.contains(href));
+      if (href && !links.includes(href));
       {
         links.push(href);
       }
     }
+    console.log('findLinks: within link iteration', 
+      i, 'of', links.length, href);
   });
 
-  return utils.checkList(links, text);
+  return utils.checkList(links, text, emit);
 }
 
-function getCheerio(url, callback)
+function init(url, emit)
 {
-  return request(url, function(error, response, body)
+  var validLinkObjects = [], hrefs = [];
+
+  request(url, function(error, response, body)
   {
     if (!error)
     {
-      return callback(cheerio.load(body));
+      console.log('\ninit: first fetch\n');
+      hrefs = findLinks(body, emit); 
+
+      // Get the html for each link in the inital page
+      // hrefs.forEach(function (link, i)
+      // {
+      //   console.log('\ninit: fetch iteration\n', i, link);
+
+      //   fetchHtml(link, function(body)
+      //   {
+      //     let linkObject = {url: link};
+
+      //     linkObject = find.metaData(cheerio, linkObject);
+      //     linkObject = find.elements(cheerio, linkObject, ['h1','h2']);
+
+      //     // socket.emit('foundLink', {linkObject: linkObject});
+      //     emit(linkObject);
+      //   })
+      // })
+
+      console.log('\nfetchHtml: cheerio.load(body)\n', cheerio.load(body));
     }
     else
     {
@@ -47,47 +73,24 @@ function getCheerio(url, callback)
   });
 }
 
-router.use('/', function(req, res, next)
+module.exports = function (io) 
 {
-  res.render('index');
-});
+  router.post('/', function(req, res, next)
+  {
+    const url = req.body.url;
+    res.render('links', {url});
 
-// module.exports = {
-//   getCheerio: getCheerio, 
-//   parseCheerioForLinks: parseCheerioForLinks
-// };
+    console.log('1', 'hello!', req.body.url);
 
-app.post('/', function(req, res, next)
-{
-  // var serverIo = require('http').createServer(express());
-  // var io = require('socket.io').listen(serverIo);
+    init(url, function(validLinkObject) {
+      io.emit('counting', validLinkObject);
+    });
+  });
 
-  // io.on('connection', function (data)
-  // {
-  //   console.log('chelo chelo');
-  //   var validLinkObjects = [], hrefs = [];
+  router.get('/', function(req, res, next)
+  {
+    res.redirect('/');
+  });
 
-  //   // Get the html at the requested link
-  //   linkUtils.getCheerio(data.url, function()
-  //   {
-  //     hrefs = parseCheerioForLinks($, text); 
-
-  //     // Get the html for each link in the inital page
-  //     hrefs.forEach(function (link, i)
-  //     {
-  //       linkUtils.getCheerio(link, function(body)
-  //       {
-  //           var linkObject = {url: link};
-
-  //           linkObject = find.metaData($, linkObject);
-  //           linkObject = find.elements($, linkObject, ['h1','h2']);
-
-  //           socket.emit('foundLink', {linkObject: linkObject});
-  //           return linkObject;
-  //       })
-  //     })
-  //   })
-  // });
-});
-
-module.exports = router;
+  return router;
+};

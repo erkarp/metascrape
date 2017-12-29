@@ -1,5 +1,6 @@
 extends layout
 
 block content  
-  #main
-  #links
+	form(method='post' action='links')
+		input(type='url' name='url' autofocus)
+		input(type='submit' value='Go!')
