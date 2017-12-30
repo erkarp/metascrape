@@ -10,17 +10,15 @@ var webpackDevMiddleware = require('webpack-dev-middleware');
 var webpackHotMiddleware = require('webpack-hot-middleware');
 
 var app = express();
-app.io = require('socket.io')();
-
 var config = require('./webpack.config.js');
 var compiler = webpack(config);
 
 var routes = require('./server/routes/index');
 var users = require('./server/routes/users');
-var links = require('./server/routes/links')(app.io);
+var links = require('./server/routes/links');
 
 app.use(webpackDevMiddleware(compiler, {noInfo: true, publicPath: config.output.publicPath}));
-app.use(webpackHotMiddleware(compiler));
+app.use(webpackHotMiddleware(compiler));   
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

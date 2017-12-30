@@ -19,7 +19,7 @@ module.exports = {
     }
   },
 
-  checkList: function(list, link, emit) {
+  checkList: function(list, link, io) {
 
     var url = parse(link),
         domain = remove.protocol(url),
@@ -32,7 +32,7 @@ module.exports = {
 
       if (validated)
       {
-        emit(validated);
+        io.emit('news', {validated});
         arr.push(validated);
       }
 

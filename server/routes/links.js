@@ -6,14 +6,8 @@ var utils = require('../tasks/script.js');
 var find  = require('../tasks/find.js');
 var router = express.Router();
 
-function findLinks(text, emit)
+function findLinks(text, io)
 {
-  console.log('\nfindLinks: text is\n', typeof text, text);
-  // var parts = text.split('/'),
-  //   url = parse(text),
-  //   links = [];
-
-  // text = text.replace(new RegExp(url.pathname + '$'), '');
   var links = [];
 
   cheerio('a', text).each(function(i, elem)
@@ -32,10 +26,10 @@ function findLinks(text, emit)
       i, 'of', links.length, href);
   });
 
-  return utils.checkList(links, text, emit);
+  return utils.checkList(links, text, io);
 }
 
-function init(url, emit)
+function init(url, io)
 {
   var validLinkObjects = [], hrefs = [];
 
@@ -44,7 +38,7 @@ function init(url, emit)
     if (!error)
     {
       console.log('\ninit: first fetch\n');
-      hrefs = findLinks(body, emit); 
+      hrefs = findLinks(body, io); 
 
       // Get the html for each link in the inital page
       // hrefs.forEach(function (link, i)
@@ -62,8 +56,6 @@ function init(url, emit)
       //     emit(linkObject);
       //   })
       // })
-
-      console.log('\nfetchHtml: cheerio.load(body)\n', cheerio.load(body));
     }
     else
     {
@@ -73,24 +65,21 @@ function init(url, emit)
   });
 }
 
-module.exports = function (io) 
+router.post('/', function(req, res, next)
 {
-  router.post('/', function(req, res, next)
-  {
-    const url = req.body.url;
-    res.render('links', {url});
+  const url = req.body.url;
+  console.log('1', 'hello!', req.body.url);
 
-    console.log('1', 'hello!', req.body.url);
+  const io = req.app.get('socketio');
+  console.log('io', io.sockets.name);
 
-    init(url, function(validLinkObject) {
-      io.emit('counting', validLinkObject);
-    });
-  });
+  res.render('links', {url});
+  init(url, io);
+});
 
-  router.get('/', function(req, res, next)
-  {
-    res.redirect('/');
-  });
+router.get('/', function(req, res, next)
+{
+  res.redirect('/');
+});
 
-  return router;
-};
+module.exports = router;

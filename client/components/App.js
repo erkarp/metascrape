@@ -5,10 +5,7 @@ import { createStore } from 'redux'
 import LinkList from './LinkList'
 
 const App = () => {
-  if (store)
-  {
-    return (<LinkList props={props}></LinkList>)
-  }
+  return (<LinkList props={this.props}></LinkList>)
 }
 
 export default App 
