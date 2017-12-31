@@ -4,15 +4,12 @@ import LinkItem from './LinkItem.js'
 
 
 const mapStateToProps = (state) => {
-  console.log('state', state);
   return { links: state.addLink };
 }
 
 class LinkList extends Component 
 {
-  render ()
-  {
-    console.log('this.props', this.props);
+  render () {
     return (
         <table>
           <thead>
@@ -21,7 +18,7 @@ class LinkList extends Component
 
           <tbody>
             {this.props.links.map((link, i) => {
-                return (<LinkItem key={i} url={link.url}></LinkItem>)
+                return (<LinkItem key={i} url={link}></LinkItem>)
               }
             )}
           </tbody>

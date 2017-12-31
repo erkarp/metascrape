@@ -68,10 +68,7 @@ function init(url, io)
 router.post('/', function(req, res, next)
 {
   const url = req.body.url;
-  console.log('1', 'hello!', req.body.url);
-
-  const io = req.app.get('socketio');
-  console.log('io', io.sockets.name);
+  const io  = req.app.get('socketio');
 
   res.render('links', {url});
   init(url, io);

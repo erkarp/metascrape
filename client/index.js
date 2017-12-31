@@ -12,10 +12,7 @@ let store = createStore(metaScrape);
 
 socket.on('news', function (data) {
 	console.log(data);
-});
-
-socket.on('counting', function (data) {
-	console.log('counting', data);
+	store.dispatch(incomingLink(data.href))
 });
 
 render(
