@@ -22,11 +22,11 @@ function findLinks(text, io)
         links.push(href);
       }
     }
-    console.log('findLinks: within link iteration', 
-      i, 'of', links.length, href);
+    console.log('findLinks:', i, href);
+    io.emit('news', {href});
   });
 
-  return utils.checkList(links, text, io);
+  return utils.checkList(links, text);
 }
 
 function init(url, io)

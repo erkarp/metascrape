@@ -32,7 +32,6 @@ module.exports = {
 
       if (validated)
       {
-        io.emit('news', {validated});
         arr.push(validated);
       }
 

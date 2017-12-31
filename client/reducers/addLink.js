@@ -1,4 +1,4 @@
-export default function newLinkReducer(state=initialState.newLink, action) 
+export default function newLinkReducer(state=[], action) 
 {
   switch(action.type) 
   {
@@ -6,6 +6,6 @@ export default function newLinkReducer(state=initialState.newLink, action)
       sessionStorage.setItem('newLink', action.payload)
       return action.payload;
     default:
-      return sessionStorage.newLink || state
+      return state
   }
 }
