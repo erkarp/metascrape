@@ -8,8 +8,8 @@ var find = {
     let desc = cheerio('meta[name=description]', body).attr('content');
     let title = cheerio('title').text();
 
-    desc = clean(desc)    || null;
-    title = clean(title)  || null;
+    desc = clean(desc)    || '';
+    title = clean(title)  || '';
  
     return Object.assign({ desc, title }, object);
   },

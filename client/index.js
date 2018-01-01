@@ -12,7 +12,7 @@ let store = createStore(metaScrape);
 
 socket.on('news', function (data) {
 	console.log(data);
-	store.dispatch(incomingLink(data.link))
+	store.dispatch(incomingLink(data))
 });
 
 render(

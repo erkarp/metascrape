@@ -12,16 +12,11 @@ class LinkList extends Component
   render () {
     return (
         <table>
-          <thead>
-            <tr><th>Slug</th></tr>
-          </thead>
-
-          <tbody>
-            {this.props.links.map((link, i) => {
-                return (<LinkItem key={i} url={link}></LinkItem>)
-              }
-            )}
-          </tbody>
+            {
+              this.props.links.map((link, i) => {
+                return (<LinkItem key={i} data={link}></LinkItem>)
+              })
+            }
         </table>
     )
   }
