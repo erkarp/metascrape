@@ -4,14 +4,17 @@ import LinkItem from './LinkItem.js'
 
 
 const mapStateToProps = (state) => {
-  return { links: state.addLink };
+  return { 
+    links: state.addLink,
+    style: state.getStyles
+  };
 }
 
 class LinkList extends Component 
 {
   render () {
     return (
-        <table>
+        <table className={this.props.style.join(' ')}>
             {
               this.props.links.map((link, i) => {
                 return (<LinkItem key={i} data={link}></LinkItem>)

@@ -6,12 +6,12 @@ var find = {
   metaData: function(body, object)
   {
     let desc = cheerio('meta[name=description]', body).attr('content');
-    let title = cheerio('title').text();
+    let title = cheerio('head title', body).text();
 
-    desc = clean(desc)    || '';
-    title = clean(title)  || '';
+    desc = clean(desc) || '';
+    title = clean(title)      || '';
  
-    return Object.assign({ desc, title }, object);
+    return Object.assign({ title, desc }, object);
   },
 
   elements: function(body, object, elements)

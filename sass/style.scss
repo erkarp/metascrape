@@ -21,65 +21,29 @@ h2
   text-align: center;
 }
 
-
 form
 {
     width: 250px;
     margin: 0 auto;
 }
 
-.row .row
+.row 
 {
-  margin-left: 0;
-  margin-right: 15px;
+  display: none;
 }
 
-.well.well-sm
+.link .data
 {
-  overflow-x: scroll;
+  font-style: italic;
 }
 
-@media(max-width: 501px)
+@each $style in 'link', 'title', 'description' 
 {
-  .row > div
-{
-    width: 100%;
-    margin: 0;
-    padding: 0;
-  }
-}
-
-
-.description
-{
-  min-height: 16px;
-}
-.title,
-.description
-{
-  &:empty:after
+  .#{$style}s
   {
-    display: inline;
-    font-style: italic;
-    color: #bbb;
+    .row.#{$style} 
+    {
+      display: table-row;
+    }
   }
-}
-.title:empty:after
-{
-  content: 'empty title';
-}
-.description:empty:after
-{
-  content: 'empty meta description';
-}
-
-
-
-.good
-{
-  color: green;
-}
-.bad
-{
-  color: red;
 }
