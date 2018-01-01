@@ -1,14 +1,16 @@
 extends layout
 
 block title 
-  title MetaScrape | #{url}
+	title MetaScrape | #{url}
   
 block content
-  h5: em #{url}
-  #main
+	h5
+		em #{url} 
+		em(style="float:right"): a(href="../") Back
+	#main
 
 block scripts
-  script(src='https://fb.me/react-0.14.0.js')
-  script(src='https://fb.me/react-dom-0.14.0.js')  
-  script(src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.6.0/socket.io.js')
-  script(src='/bundle.js')
+	script(src='https://fb.me/react-0.14.0.js')
+	script(src='https://fb.me/react-dom-0.14.0.js')  
+	script(src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.6.0/socket.io.js')
+	script(src='/bundle.js')

@@ -6,7 +6,7 @@ var find = {
   metaData: function(body, object)
   {
     let desc = cheerio('meta[name=description]', body).attr('content');
-    let title = cheerio('head title', body).text();
+    let title = cheerio('title', body).text();
 
     desc = clean(desc) || '';
     title = clean(title)      || '';

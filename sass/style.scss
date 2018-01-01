@@ -1,39 +1,43 @@
-body
-{
+body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
-a
-{
-  color: #00B7FF;
-}
-
-h1
-{
+h1 {
   font-size: 4em;
   text-align: center;
 }
 
-h2
-{
+h2 {
   font-size: 1.7em;
   text-align: center;
 }
 
-form
-{
-    width: 250px;
-    margin: 0 auto;
+form {
+  width: 250px;
+  margin: 0 auto;
 }
 
-.row 
-{
+table {
+  width: 100%; 
+}
+
+tbody {
+  border-bottom: 1px solid lightgray;
+} 
+
+.row {
   display: none;
 }
 
-.link .data
-{
+.name {
+  width: 80px;
+  font-size: 12px;
+  color: darkgray;
+  vertical-align: top;
+}
+
+.link .data {
   font-style: italic;
 }
 
