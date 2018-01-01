@@ -1,27 +1,12 @@
-var parse     = require('url-parse');
-var validate  = require('./validate/validate');
-var remove    = require('./validate/remove');
-var utils     = require('./utils');
+var validate = require('./validate/validate');
+var remove   = require('./validate/remove');
+var utils    = require('./utils');
 
-module.exports = {
-
-  removeHash: function(href)
-  {
-    var hash = href.indexOf('#');
-    if (hash > -1)
-    {
-      href = href.slice(0, hash);
-    }
-
-    if (href.length > 0)
-    {
-      return href;
-    }
-  },
-
+module.exports = 
+{
   checkList: function(list, link, io) {
 
-    var url = parse(link),
+    let
         domain = remove.protocol(url),
         links = utils.sortAndFilter(list),
         input = { url: url, domain: domain };

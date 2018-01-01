@@ -1,4 +1,3 @@
-var parse = require('url-parse');
 var does = require('./booleans');
 var remove = require('./remove');
 

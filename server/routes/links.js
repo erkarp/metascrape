@@ -1,32 +1,43 @@
-var express = require('express');
-var request = require("request");
-var cheerio = require("cheerio");
-var parse = require('url-parse');
-var utils = require('../tasks/script.js');
-var find  = require('../tasks/find.js');
-var router = express.Router();
+const express = require('express');
+const request = require('request');
+const cheerio = require('cheerio');
+const { URL } = require('url');
+const utils   = require('../tasks/script.js');
+const find    = require('../tasks/find.js');
+const router  = express.Router();
 
-function findLinks(text, io)
+function findLinks(text, input, io)
 {
-  var links = [];
+  const url = new URL(input), 
+        list = [],
+        inputHostname = url.hostname;
 
   cheerio('a', text).each(function(i, elem)
   {
-    var href = cheerio(this).attr('href');
+    let href = cheerio(this).attr('href');
 
-    if (href)
+    try 
     {
-      href = utils.removeHash(href);
-      if (href && !links.includes(href));
+      href = new URL(href)
+    } 
+    catch(e) 
+    {
+      href = new URL(href, url.origin + url.pathname)
+    }
+    finally 
+    {
+      let link = href.origin + href.pathname;
+
+      if (href && href.hostname === inputHostname && !list.includes(link))
       {
-        links.push(href);
+        io.emit('news', {link});
+        list.push(link);
       }
     }
-    console.log('findLinks:', i, href);
-    io.emit('news', {href});
   });
 
-  return utils.checkList(links, text);
+  console.log('\nLIST:\n', list);
+  // return utils.checkList(links, text);
 }
 
 function init(url, io)
@@ -38,7 +49,7 @@ function init(url, io)
     if (!error)
     {
       console.log('\ninit: first fetch\n');
-      hrefs = findLinks(body, io); 
+      hrefs = findLinks(body, url, io); 
 
       // Get the html for each link in the inital page
       // hrefs.forEach(function (link, i)
