@@ -1,6 +1,7 @@
 const express = require('express');
 const request = require('request');
 const cheerio = require('cheerio');
+const debug   = require('debug');
 const { URL } = require('url');
 const utils   = require('../tasks/script.js');
 const find    = require('../tasks/find.js');
@@ -9,7 +10,7 @@ const router  = express.Router();
 function findLinks(text, input, io)
 {
   const url = new URL(input), 
-        list = [],
+        list = [url.origin + url.pathname],
         inputHostname = url.hostname;
 
   cheerio('a', text).each(function(i, elem)
@@ -30,8 +31,17 @@ function findLinks(text, input, io)
 
       if (href && href.hostname === inputHostname && !list.includes(link))
       {
-        io.emit('news', {link});
         list.push(link);
+
+        request(link, function(error, response, body)
+        {
+          const elements = ['h1', 'h2'];
+
+          let linkObject = find.metaData(body, { link });
+              linkObject = find.elements(body, linkObject, elements);
+
+          io.emit('news', linkObject);
+        });
       }
     }
   });
@@ -48,26 +58,9 @@ function init(url, io)
   {
     if (!error)
     {
-      console.log('\ninit: first fetch\n');
       hrefs = findLinks(body, url, io); 
-
-      // Get the html for each link in the inital page
-      // hrefs.forEach(function (link, i)
-      // {
-      //   console.log('\ninit: fetch iteration\n', i, link);
-
-      //   fetchHtml(link, function(body)
-      //   {
-      //     let linkObject = {url: link};
-
-      //     linkObject = find.metaData(cheerio, linkObject);
-      //     linkObject = find.elements(cheerio, linkObject, ['h1','h2']);
-
-      //     // socket.emit('foundLink', {linkObject: linkObject});
-      //     emit(linkObject);
-      //   })
-      // })
     }
+
     else
     {
       console.log("We’ve encountered an error: " + error);

@@ -3,21 +3,35 @@ var clean = require('./unescape');
 
 var find = {
 
-  metaData: function(c, obj, obj)
+  metaData: function(body, object)
   {
-    var desc = c('meta[name=description]').attr('content');
-    obj.description = clean(desc) || null;
-    obj.title = clean(c('title').html()) || null;
-    return obj;
+    let desc = cheerio('meta[name=description]', body).attr('content');
+    let title = cheerio('title').text();
+
+    desc = clean(desc)    || null;
+    title = clean(title)  || null;
+ 
+    return Object.assign({ desc, title }, object);
   },
 
-  elements: function(c, obj, elems)
+  elements: function(body, object, elements)
   {
-    elems.forEach(function(elem)
+    elements.forEach(function(elem)
     {
-      obj[elem] = clean(c(elem).html()) || null;
+      object[elem] = [];
+
+      cheerio(elem, body).each(function()
+      {
+        let text = clean(cheerio(this).text());
+        
+        if (text)
+        {
+          object[elem].push(text);
+        }
+      });
     });
-    return obj;
+
+    return object;
   }
 
 };
