@@ -3,6 +3,8 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
+// Overwrite
+
 h1 {
   font-size: 4em;
   text-align: center;
@@ -16,6 +18,20 @@ h2 {
 form {
   width: 250px;
   margin: 0 auto;
+}
+
+
+form.tagsForm
+{
+  width: 100%;
+  margin: 0 auto 10px;
+  display: flex;
+  justify-content: space-around;
+
+  input
+  {
+    margin-left: 5px;
+  }
 }
 
 table {
@@ -35,15 +51,16 @@ tbody {
   font-size: 12px;
   color: darkgray;
   vertical-align: top;
+  user-select: none;
 }
 
-.link .data {
+.row.link .data {
   font-style: italic;
 }
 
-@each $style in 'link', 'title', 'description' 
+@each $style in 'link', 'title', 'description', 'h1_tag', 'h2_tag'
 {
-  .#{$style}s
+  .#{$style}
   {
     .row.#{$style} 
     {

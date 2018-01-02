@@ -1,4 +1,6 @@
-export default function stylesReducer(state=['links', 'titles', 'descriptions'], action) 
+const tags = ['link', 'title', 'description'];
+
+export default function stylesReducer(state=tags, action) 
 {
   switch(action.type)
   {

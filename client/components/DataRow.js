@@ -4,10 +4,20 @@ class DataRow extends Component {
 
 	render ()
 	{
+		const data = this.props.data;
+		const info = this.props.info;
+
 		return (
-	  		<tr className={'row ' + this.props.name.toLowerCase()}>
-	  			<td className="name">{this.props.name}</td>
-	  			<td className="data">{this.props.data}</td>
+	  		<tr className={'row ' + info.name}>
+	  			<td className="name">{info.label}</td>
+	  			<td className="data"> 
+	  			{
+	  				(typeof data === 'string') ? data :
+	  				data.map((item, i) => {
+	  					return(<div key={i}>{item}</div>)
+	  				})
+	  			}
+	  			</td>
 	  		</tr>
 		)
 	}
