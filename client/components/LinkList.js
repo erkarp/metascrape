@@ -13,13 +13,13 @@ class LinkList extends Component
 {
   render () {
     return (
-        <table className={this.props.style.join(' ')}>
+        <ul className={this.props.style.join(' ')}>
             {
               this.props.links.map((link, i) => {
                 return (<LinkItem key={i} data={link}></LinkItem>)
               })
             }
-        </table>
+        </ul>
     )
   }
 }

@@ -34,31 +34,47 @@ form.tagsForm
   }
 }
 
-table {
-  width: 100%; 
+ul {
+  list-style: none;
+  padding-left: 0;
 }
 
-tbody {
-  border-bottom: 1px solid lightgray;
-} 
+li {
+  position: relative;
+  width: 100%; 
+  padding-left: 80px;
+}
+
+li {
+
+}
 
 .row {
   display: none;
+
+  &::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 0;
+    width: 80px;
+    font-size: 12px;
+    color: darkgray;
+    vertical-align: top;
+    user-select: none;
+  }
 }
 
-.name {
-  width: 80px;
-  font-size: 12px;
-  color: darkgray;
-  vertical-align: top;
-  user-select: none;
+.row:empty::before {
+    display: none;
 }
 
 .row.link .data {
   font-style: italic;
 }
 
-@each $style in 'link', 'title', 'description', 'h1_tag', 'h2_tag', 'p_tag'
+$tags:'link', 'title', 'description', 'h1_tag', 'h2_tag', 'p_tag';
+
+@each $style in $tags
 {
   .#{$style}
   {
@@ -66,5 +82,10 @@ tbody {
     {
       display: table-row;
     }
+  }
+
+  ul.#{$style} li
+  {
+    border-bottom: 1px solid lightgray;
   }
 }

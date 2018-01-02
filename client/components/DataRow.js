@@ -8,17 +8,14 @@ class DataRow extends Component {
 		const info = this.props.info;
 
 		return (
-	  		<tr className={'row ' + info.name}>
-	  			<td className="name">{info.label}</td>
-	  			<td className="data"> 
+	  		<div className={'row ' + info.name} data-label={info.label}>
 	  			{
 	  				(typeof data === 'string') ? data :
 	  				data.map((item, i) => {
 	  					return(<div key={i}>{item}</div>)
 	  				})
 	  			}
-	  			</td>
-	  		</tr>
+	  		</div>
 		)
 	}
 }
