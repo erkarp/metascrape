@@ -35,7 +35,7 @@ function findLinks(text, input, io)
 
         request(link, function(error, response, body)
         {
-          const elements = ['h1', 'h2'];
+          const elements = ['h1', 'h2', 'p'];
 
           let linkObject = find.metaData(body, { link });
               linkObject = find.elements(body, linkObject, elements);

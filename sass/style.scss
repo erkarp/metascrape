@@ -58,7 +58,7 @@ tbody {
   font-style: italic;
 }
 
-@each $style in 'link', 'title', 'description', 'h1_tag', 'h2_tag'
+@each $style in 'link', 'title', 'description', 'h1_tag', 'h2_tag', 'p_tag'
 {
   .#{$style}
   {

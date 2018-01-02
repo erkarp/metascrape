@@ -1,14 +1,14 @@
 export default
 [{
-	label: 'Links',
+	label: 'Link',
 	name: 'link', 
 	tag: 'link'
 }, {
-	label: 'Titles',
+	label: 'Title',
 	name: 'title',
 	tag: 'title'
 }, {
-	label: 'Descriptions',
+	label: 'Description',
 	name: 'description',
 	tag: 'desc'
 }, {
@@ -19,4 +19,8 @@ export default
 	label: 'h2 Tags',
 	name: 'h2_tag',
 	tag: 'h2'
+}, {
+	label: 'p Tags',
+	name: 'p_tag',
+	tag: 'p'
 }];
