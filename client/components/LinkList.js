@@ -1,17 +1,19 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { updateStyles } from '../actions'
 import LinkItem from './LinkItem.js'
 
 const mapStateToProps = (state) => {
   return { 
-    links: state.addLink,
+    links: state.getLinks,
     style: state.getStyles
   };
-}
+};
 
 class LinkList extends Component 
 {
   render () {
+
     return (
         <ul className={this.props.style.join(' ')}>
             {

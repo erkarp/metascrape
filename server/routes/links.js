@@ -27,7 +27,8 @@ function findLinks(text, input, io)
     }
     finally 
     {
-      let link = href.origin + href.pathname;
+      let pathname = href.pathname.replace(/\/$/, '');
+      let link = href.origin + pathname;
 
       if (href && href.hostname === inputHostname && !list.includes(link))
       {
@@ -36,9 +37,14 @@ function findLinks(text, input, io)
         request(link, function(error, response, body)
         {
           const elements = ['h1', 'h2', 'p'];
-
-          let linkObject = find.metaData(body, { link });
-              linkObject = find.elements(body, linkObject, elements);
+ 
+          let linkObject = 
+          {
+              order: list.length
+          };
+  
+          linkObject = find.metaData(body, { link });
+          linkObject = find.elements(body, linkObject, elements);
 
           io.emit('news', linkObject);
         });

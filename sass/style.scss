@@ -68,11 +68,16 @@ li {
     display: none;
 }
 
-.row.link .data {
+.row.link {
   font-style: italic;
 }
 
-$tags:'link', 'title', 'description', 'h1_tag', 'h2_tag', 'p_tag';
+$tags:'link', 
+      'title', 
+      'description', 
+      'h1_tag', 
+      'h2_tag', 
+      'p_tag';
 
 @each $style in $tags
 {

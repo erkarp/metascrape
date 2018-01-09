@@ -1,5 +1,6 @@
 import { Component } from 'react'
 import Checkbox from './Checkbox'
+import SortByRadio from './SortByRadio'
 import checkboxes from '../data/tagData'
 
 class FilterForm extends Component 
@@ -8,11 +9,13 @@ class FilterForm extends Component
 	{
 		return (
 	  		<form className="well tagsForm">
-	  		{
-	  			checkboxes.map((checkbox, i) => {
+	  			Sort by: 
+	  			<SortByRadio criteria="link" label="URL" />
+	  			<SortByRadio criteria="title" label="Title" />
+
+	  			{checkboxes.map((checkbox, i) => {
 	  				return (<Checkbox key={i} info={checkbox} />)
-	  			})
-	  		} 		
+	  			})} 		
 	  		</form>
 		)
 	}

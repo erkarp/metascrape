@@ -8,7 +8,10 @@ import { addIncomingLink } from './actions'
 import metaScrape from './reducers'
 import App from './components/App.js'
 
-let store = createStore(metaScrape);
+let store = createStore(metaScrape,
+   window.__REDUX_DEVTOOLS_EXTENSION__ && 
+   window.__REDUX_DEVTOOLS_EXTENSION__()
+);
 
 socket.on('news', function (data) {
 	console.log(data);
