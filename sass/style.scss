@@ -4,29 +4,34 @@ body {
 }
 
 // Overwrite
-
-h1 {
+h1 
+{
   font-size: 4em;
   text-align: center;
 }
 
-h2 {
+h2 
+{
   font-size: 1.7em;
   text-align: center;
 }
 
-form {
+form 
+{
   width: 250px;
   margin: 0 auto;
 }
-
 
 form.tagsForm
 {
   width: 100%;
   margin: 0 auto 10px;
-  display: flex;
-  justify-content: space-around;
+
+  > div 
+  {
+    display: flex;
+    justify-content: space-around;
+  }
 
   input
   {
@@ -77,7 +82,8 @@ $tags:'link',
       'description', 
       'h1_tag', 
       'h2_tag', 
-      'p_tag';
+      'p_tag',
+      'index';
 
 @each $style in $tags
 {

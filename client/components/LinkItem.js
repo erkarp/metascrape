@@ -8,7 +8,8 @@ class LinkItem extends Component {
 		return (
 			<li>{
 				constants.map((info, i) => {
-					return (<Row data={this.props.data[info.tag]} info={info} key={i} />)
+					return (<Row data={this.props.data[info.tag]} 
+								 info={info} key={i}/>)
 				})
 			}</li>
 	  )

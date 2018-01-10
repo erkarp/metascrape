@@ -1,6 +1,6 @@
 export default
 [{
-	label: 'Link',
+	label: 'URL',
 	name: 'link', 
 	tag: 'link'
 }, {
@@ -23,4 +23,8 @@ export default
 	label: 'p Tags',
 	name: 'p_tag',
 	tag: 'p'
+}, {
+	label: 'Index',
+	name: 'index',
+	tag: 'index'
 }];

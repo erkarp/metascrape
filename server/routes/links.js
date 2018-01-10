@@ -32,18 +32,15 @@ function findLinks(text, input, io)
 
       if (href && href.hostname === inputHostname && !list.includes(link))
       {
+        let index = list.length;
         list.push(link);
 
         request(link, function(error, response, body)
         {
           const elements = ['h1', 'h2', 'p'];
- 
-          let linkObject = 
-          {
-              order: list.length
-          };
+          let linkObject = { link, index };
   
-          linkObject = find.metaData(body, { link });
+          linkObject = find.metaData(body, linkObject);
           linkObject = find.elements(body, linkObject, elements);
 
           io.emit('news', linkObject);

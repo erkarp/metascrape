@@ -1,4 +1,4 @@
-export default function(state=0, action) 
+export default function(state='index', action) 
 {
   switch(action.type) 
   {

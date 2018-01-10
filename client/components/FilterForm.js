@@ -9,13 +9,21 @@ class FilterForm extends Component
 	{
 		return (
 	  		<form className="well tagsForm">
-	  			Sort by: 
-	  			<SortByRadio criteria="link" label="URL" />
-	  			<SortByRadio criteria="title" label="Title" />
+	  			<div>
+		  			<SortByRadio criteria="index" label="Index" />
+		  			<SortByRadio criteria="link" label="URL" />
+		  			<SortByRadio criteria="title" label="Title" />
+		  			<SortByRadio criteria="desc" label="Description" />
+	  			</div>
+	  			<hr/>
+	  			<div>
+					{checkboxes.map((checkbox, i) => {
+		  				return (<Checkbox key={i} info={checkbox} />)
+		  			})} 
+	  			</div>
 
-	  			{checkboxes.map((checkbox, i) => {
-	  				return (<Checkbox key={i} info={checkbox} />)
-	  			})} 		
+	  			
+	  					
 	  		</form>
 		)
 	}

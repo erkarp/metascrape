@@ -2,19 +2,18 @@ import { Component } from 'react'
 
 class DataRow extends Component {
 
-	render ()
-	{
+	render () {
 		const data = this.props.data;
 		const info = this.props.info;
 
 		return (
 	  		<div className={'row ' + info.name} data-label={info.label}>
-	  			{
-	  				(typeof data === 'string') ? data :
-	  				data.map((item, i) => {
+  			{
+  				(typeof data === 'string' || typeof data === 'number') ? 
+	  				data : data.map((item, i) => {
 	  					return(<div key={i}>{item}</div>)
-	  				})
-	  			}
+  				})
+  			}
 	  		</div>
 		)
 	}
