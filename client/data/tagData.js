@@ -24,6 +24,10 @@ export default
 	name: 'p_tag',
 	tag: 'p'
 }, {
+	label: 'Count',
+	name: 'count',
+	tag: 'count'
+}, {
 	label: 'Index',
 	name: 'index',
 	tag: 'index'

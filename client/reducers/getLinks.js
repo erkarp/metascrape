@@ -18,15 +18,28 @@ export default function(state=[], action)
             return nextState.push(link);
         }, []);
 
+    case 'INCREMENT_COUNT':
+    console.log(action.link);
+        return state.map(function(link)
+        {
+          console.log(link);
+          if (link.link === action.link)
+          {
+            link.count++;
+          }
+          return link;
+        })
+
     case 'SORT_LINKS':
         const sorter = action.criteria;
-        console.log('SORT', action);
 
-        return state.slice().sort(function (a, b) {
+        let nextState = state.slice().sort(function (a, b) {
           if (a[sorter] < b[sorter]) { return -1 }
           if (a[sorter] > b[sorter]) { return 1 }
           return 0
         });
+
+        return sorter === 'count' ? nextState.reverse() : nextState;
 
     default:
         return state;

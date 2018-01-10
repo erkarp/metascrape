@@ -18,6 +18,11 @@ export function updateStyles(className, checked)
 	}
 }
 
+export function incrementCount(link)
+{
+	return { link, type: 'INCREMENT_COUNT' }
+}
+
 export function sortLinkList(criteria)
 {
 	return { criteria, type: 'SORT_LINKS' }

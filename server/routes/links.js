@@ -29,8 +29,16 @@ function findLinks(text, input, io)
     {
       let pathname = href.pathname.replace(/\/$/, '');
       let link = href.origin + pathname;
+      let indexOf = list.indexOf(link);
 
-      if (href && href.hostname === inputHostname && !list.includes(link))
+      if (indexOf > -1)
+      {
+        setTimeout(function() {
+          io.emit('count', link);
+        }, 5000);
+      }
+
+      else if (href && href.hostname === inputHostname)
       {
         let index = list.length;
         list.push(link);
@@ -38,7 +46,7 @@ function findLinks(text, input, io)
         request(link, function(error, response, body)
         {
           const elements = ['h1', 'h2', 'p'];
-          let linkObject = { link, index };
+          let linkObject = { link, index, count: 1 };
   
           linkObject = find.metaData(body, linkObject);
           linkObject = find.elements(body, linkObject, elements);

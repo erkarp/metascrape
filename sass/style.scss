@@ -31,6 +31,11 @@ form.tagsForm
   {
     display: flex;
     justify-content: space-around;
+
+    @media (max-width:586px)
+    {
+      flex-direction: column;
+    }
   }
 
   input
@@ -83,6 +88,7 @@ $tags:'link',
       'h1_tag', 
       'h2_tag', 
       'p_tag',
+      'count',
       'index';
 
 @each $style in $tags

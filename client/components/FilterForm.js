@@ -11,6 +11,7 @@ class FilterForm extends Component
 	  		<form className="well tagsForm">
 	  			<div>
 		  			<SortByRadio criteria="index" label="Index" />
+		  			<SortByRadio criteria="count" label="Count" />
 		  			<SortByRadio criteria="link" label="URL" />
 		  			<SortByRadio criteria="title" label="Title" />
 		  			<SortByRadio criteria="desc" label="Description" />

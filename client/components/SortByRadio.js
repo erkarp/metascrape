@@ -5,8 +5,8 @@ import { updateSorter, sortLinkList } from '../actions'
 const mapStateToProps = (state) => {
   return {
     sorter: state.getSort
-  };
-}
+  }
+};
 
 const mapDispatchToProps = (dispatch) => {
 	return { 
