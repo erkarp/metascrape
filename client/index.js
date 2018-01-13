@@ -19,7 +19,7 @@ socket.on('news', function (data) {
 
 socket.on('count', function (data) {
 	console.log(data);
-	store.dispatch(incrementCount(data))
+	store.dispatch(incrementCount(data));
 });
 
 render(

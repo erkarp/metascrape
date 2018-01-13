@@ -10,7 +10,8 @@ class DataRow extends Component {
 	  		<div className={'row ' + info.name} data-label={info.label}>
   			{
   				(typeof data === 'string' || typeof data === 'number') ? 
-	  				data : data.map((item, i) => {
+	  				data : (typeof data[0] === 'number') ? 
+	  				data.join(', ') : data.map((item, i) => {
 	  					return(<div key={i}>{item}</div>)
   				})
   			}

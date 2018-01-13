@@ -19,27 +19,50 @@ export default function(state=[], action)
         }, []);
 
     case 'INCREMENT_COUNT':
-    console.log(action.link);
         return state.map(function(link)
         {
-          console.log(link);
           if (link.link === action.link)
           {
             link.count++;
+            link.index.push(action.index);
           }
           return link;
         })
 
     case 'SORT_LINKS':
-        const sorter = action.criteria;
 
-        let nextState = state.slice().sort(function (a, b) {
-          if (a[sorter] < b[sorter]) { return -1 }
-          if (a[sorter] > b[sorter]) { return 1 }
-          return 0
-        });
+        switch (action.criteria)
+        {
+          case 'count':
+            return state.slice().sort(function (a, b) {
+              const valA = parseInt(a.count),
+                    valB = parseInt(b.count); 
 
-        return sorter === 'count' ? nextState.reverse() : nextState;
+              if (valA < valB) { return -1 }
+              if (valA > valB) { return 1 }
+              return 0
+            }).reverse();
+
+          case 'index':
+            return state.slice().sort(function (a, b) {
+              const valA = parseInt(a.index[0]),
+                    valB = parseInt(b.index[0]); 
+
+              if (valA < valB) { return -1 }
+              if (valA > valB) { return 1 }
+              return 0
+            });
+
+          default: 
+            return state.slice().sort(function (a, b) {
+              const valA = a[action.criteria],
+                    valB = b[action.criteria]; 
+
+              if (valA < valB) { return -1 }
+              if (valA > valB) { return 1 }
+              return 0
+            });
+        }
 
     default:
         return state;

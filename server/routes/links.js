@@ -27,32 +27,39 @@ function findLinks(text, input, io)
     }
     finally 
     {
-      let pathname = href.pathname.replace(/\/$/, '');
-      let link = href.origin + pathname;
-      let indexOf = list.indexOf(link);
-
-      if (indexOf > -1)
+      if (href && href.hostname === inputHostname)
       {
-        setTimeout(function() {
-          io.emit('count', link);
-        }, 5000);
-      }
+          let pathname = href.pathname.replace(/\/$/, '');
+          let link = href.origin + pathname;
 
-      else if (href && href.hostname === inputHostname)
-      {
-        let index = list.length;
-        list.push(link);
+          if (list.includes(link))
+          {
+            (function(linkIndex) {
 
-        request(link, function(error, response, body)
-        {
-          const elements = ['h1', 'h2', 'p'];
-          let linkObject = { link, index, count: 1 };
-  
-          linkObject = find.metaData(body, linkObject);
-          linkObject = find.elements(body, linkObject, elements);
+              const index = linkIndex;
+              setTimeout(function() {
+                io.emit('count', { link, index })
+              }, 5000)
 
-          io.emit('news', linkObject);
-        });
+            })(list.length)
+          }
+
+          else {
+            let index = list.length;
+
+            request(link, function(error, response, body)
+            {
+              const elements = ['h1', 'h2', 'p'];
+              let linkObject = { link, index:[index], count: 1 };
+      
+              linkObject = find.metaData(body, linkObject);
+              linkObject = find.elements(body, linkObject, elements);
+
+              io.emit('news', linkObject);
+            });
+          }
+
+          list.push(link);
       }
     }
   });
