@@ -18,7 +18,8 @@ var users = require('./server/routes/users');
 var links = require('./server/routes/links');
 
 app.use(webpackDevMiddleware(compiler, {noInfo: true, publicPath: config.output.publicPath}));
-app.use(webpackHotMiddleware(compiler));   
+app.use(webpackHotMiddleware(compiler)); 
+process.env.NODE_ENV = 'production';  
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

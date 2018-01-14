@@ -1,5 +1,7 @@
 {
-  "scripts": {"start": "nodemon bin/www"},
+  "scripts": {
+    "start": "nodemon bin/www"
+  },
   "dependencies": {
     "babel": "^6.23.0",
     "babel-core": "^6.26.0",
@@ -19,7 +21,8 @@
     "redux": "^3.7.2",
     "request": "^2.83.0",
     "serve-favicon": "^2.4.5",
-    "socket.io": "^2.0.4"
+    "socket.io": "^2.0.4",
+    "webpack": "^3.9.1"
   },
   "devDependencies": {
     "babel-preset-env": "^1.6.1",
@@ -31,7 +34,6 @@
     "grunt-contrib-watch": "^1.0.0",
     "grunt-sass": "^2.0.0",
     "mocha": "^4.0.1",
-    "webpack": "^3.9.1",
     "webpack-dev-middleware": "^1.12.2",
     "webpack-hot-middleware": "^2.21.0"
   }
