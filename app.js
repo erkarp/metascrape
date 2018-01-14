@@ -17,17 +17,18 @@ var routes = require('./server/routes/index');
 var users = require('./server/routes/users');
 var links = require('./server/routes/links');
 
-app.use(webpackDevMiddleware(compiler, {noInfo: true, publicPath: config.output.publicPath}));
-app.use(webpackHotMiddleware(compiler)); 
-process.env.NODE_ENV = 'production';  
+if ( app.settings.env === 'development' ) 
+{
+  app.use(webpackDevMiddleware(compiler, {noInfo: true, publicPath: config.output.publicPath}));
+  app.use(webpackHotMiddleware(compiler)); 
+  app.use(logger('dev'));
+}
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-// uncomment after placing your favicon in /public
-// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
