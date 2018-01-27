@@ -5,13 +5,25 @@ var favicon = require('serve-favicon');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 
+var webpackDevServer = require('webpack-dev-server');
 var webpack = require('webpack');
-var webpackDevMiddleware = require('webpack-dev-middleware');
-var webpackHotMiddleware = require('webpack-hot-middleware');
+
+const options = {
+  contentBase: './dist',
+  hot: true,
+  host: 'localhost'
+};
 
 var app = express();
+// app.settings.env = 'production';
 var config = require('./webpack.config.js');
 var compiler = webpack(config);
+
+
+webpackDevServer.addDevServerEntrypoints(config, options);
+const server = new webpackDevServer(compiler, options);
+
+
 
 var routes = require('./server/routes/index');
 var users = require('./server/routes/users');
@@ -19,9 +31,12 @@ var links = require('./server/routes/links');
 
 if ( app.settings.env === 'development' ) 
 {
-  app.use(webpackDevMiddleware(compiler, {noInfo: true, publicPath: config.output.publicPath}));
+  var webpackHotMiddleware = require('webpack-hot-middleware');
   app.use(webpackHotMiddleware(compiler)); 
   app.use(logger('dev'));
+} else {
+  var webpackServerMiddleware = require('webpack-server-middleware');
+  app.use(webpackServerMiddleware(compiler));
 }
 
 // view engine setup

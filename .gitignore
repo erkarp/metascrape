@@ -3,3 +3,6 @@ node_modules
 
 *.map
 *.css
+
+public/*.js*
+dist/

@@ -3,7 +3,6 @@ const request = require('request');
 const cheerio = require('cheerio');
 const debug   = require('debug');
 const { URL } = require('url');
-const utils   = require('../tasks/script.js');
 const find    = require('../tasks/find.js');
 const router  = express.Router();
 
@@ -40,6 +39,7 @@ function findLinks(text, input, io)
               setTimeout(function() {
                 io.emit('count', { link, index })
               }, 5000)
+              console.log(link);
 
             })(list.length)
           }
@@ -65,7 +65,6 @@ function findLinks(text, input, io)
   });
 
   console.log('\nLIST:\n', list);
-  // return utils.checkList(links, text);
 }
 
 function init(url, io)
