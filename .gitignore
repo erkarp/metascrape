@@ -1,8 +1,2 @@
 node_modules
-.DS_Store
-
-*.map
-*.css
-
-public/*.js*
-dist/
+public

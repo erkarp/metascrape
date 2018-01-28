@@ -1,10 +1,14 @@
-{
+{  
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/erkarp/metascrape.git"
+   },
   "scripts": {
     "start": "npm run build; node server/index.js",
-    "start-dev": "nodemon server/index.js",
+    "dev": "nodemon server/index.js",
     "build": "webpack -p",
     "build-dev": "webpack -w",
-    "build-sass": "node-sass -w ./client/styles/main.scss -o ./client/styles/mainSheet",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {

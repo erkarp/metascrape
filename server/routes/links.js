@@ -36,10 +36,10 @@ function findLinks(text, input, io)
             (function(linkIndex) {
 
               const index = linkIndex;
+              
               setTimeout(function() {
                 io.emit('count', { link, index })
-              }, 5000)
-              console.log(link);
+              }, 5000);
 
             })(list.length)
           }
