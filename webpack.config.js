@@ -1,82 +1,44 @@
-const path = require('path');
-const webpack = require('webpack');
+var path = require('path');
+var LiveReloadPlugin = require('webpack-livereload-plugin');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var webpack = require('webpack');
 
-
-module.exports =[
-{
-  name: 'client',
-  target: 'web',
-
-  entry: [
-    path.join(__dirname, 'client/index.js')
-  ],
-
-  output:
-  {
-    path: path.resolve('./public'),
+module.exports = {
+  entry: './client/index.js',
+  output: {
     filename: 'bundle.js',
-    publicPath: '/'
+    path: path.resolve(__dirname, 'public/scripts')
   },
-
-  module:
-  {
-    rules: [
-    {
-        test: /\.scss$/,
-        use: [{
-            loader: "style-loader"
-        }, {
-            loader: "css-loader"
-        }, {
-            loader: "sass-loader",
-            options: {
-                includePaths: ['./sass']
-            }
-        }]
-    },
-    {
-      test: /\.js$/,
+  context: __dirname,
+  resolve: {
+    extensions: ['.js', '.jsx', '.json', '*']
+  },
+  module: {
+    rules: [{
+      test: /\.jsx?$/,
       exclude: /(node_modules)/,
-      use: {
-        loader: 'babel-loader',
-        options: {
-          presets: ['env', 'react']
-        }
+      loader: 'babel-loader',
+      options: {
+        presets: ['react', 'es2015']
       }
-    }]
+    }, 
+    {
+      test: /\.scss$/,
+      loader: ExtractTextPlugin.extract(
+          'style-loader', // backup loader when not building .css file
+          'css-loader!sass-loader' // loaders to preprocess CSS
+    )
+    }
+]
   },
-   plugins: [
-    new webpack.HotModuleReplacementPlugin()
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env.COSMIC_BUCKET': JSON.stringify(process.env.COSMIC_BUCKET),
+      'process.env.COSMIC_READ_KEY': JSON.stringify(process.env.COSMIC_READ_KEY),
+      'process.env.COSMIC_WRITE_KEY': JSON.stringify(process.env.COSMIC_WRITE_KEY)
+    }),
+    new ExtractTextPlugin(path.resolve(__dirname, 'public/style.css')),
+    new LiveReloadPlugin({appendScriptTag: true})
+    // new InlineManifestWebpackPlugin({ name: 'webpackManifest' })
   ]
-},
-{
-  name: 'server',
-  target: 'node',
-
-  entry: [
-    path.join(__dirname, 'app.js')
-  ],
-
-  output:
-  {
-    path: path.join(__dirname, '/dist/'),
-    filename: 'app.js',
-    publicPath: ''
-  },
-
-  module:
-  {
-    rules: [
-    {
-      test: /\.js$/,
-      exclude: /(node_modules)/,
-      use: {
-        loader: 'babel-loader',
-        options: {
-          presets: ['env']
-        }
-      }
-    }]
-  }
-}
-];
+};
