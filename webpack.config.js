@@ -24,12 +24,11 @@ module.exports = {
     }, 
     {
       test: /\.scss$/,
-      loader: ExtractTextPlugin.extract(
-          'style-loader', // backup loader when not building .css file
-          'css-loader!sass-loader' // loaders to preprocess CSS
-    )
-    }
-]
+      use: ExtractTextPlugin.extract({
+        fallback: 'style-loader',
+        use: [ 'css-loader', 'sass-loader' ]
+      })
+    }]
   },
   plugins: [
     new webpack.DefinePlugin({
@@ -37,7 +36,7 @@ module.exports = {
       'process.env.COSMIC_READ_KEY': JSON.stringify(process.env.COSMIC_READ_KEY),
       'process.env.COSMIC_WRITE_KEY': JSON.stringify(process.env.COSMIC_WRITE_KEY)
     }),
-    new ExtractTextPlugin(path.resolve(__dirname, 'public/style.css')),
+    new ExtractTextPlugin('../stylesheet/style.css'),
     new LiveReloadPlugin({appendScriptTag: true})
     // new InlineManifestWebpackPlugin({ name: 'webpackManifest' })
   ]
