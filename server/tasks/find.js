@@ -1,16 +1,16 @@
-var cheerio = require('cheerio');
-var clean = require('./unescape');
+var cheerio = require('cheerio')
+var clean = require('./unescape')
 
-var find = {
-
+module.exports = 
+{
   metaData: function(body, object)
   {
     let desc = cheerio('meta[name=description]', body).attr('content');
     let title = cheerio('title', body).text();
 
     desc = clean(desc) || '';
-    title = clean(title)      || '';
- 
+    title = clean(title) || '';
+
     return Object.assign({ title, desc }, object);
   },
 
@@ -33,8 +33,4 @@ var find = {
 
     return object;
   }
-
 };
-
-
-module.exports = find;

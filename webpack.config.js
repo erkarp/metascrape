@@ -2,16 +2,16 @@ var path = require('path');
 var LiveReloadPlugin = require('webpack-livereload-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var webpack = require('webpack');
-
-module.exports = {
-  entry: './client/index.js',
-  output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'public/scripts')
-  },
+ 
+var config = {
   context: __dirname,
   resolve: {
     extensions: ['.js', '.jsx', '.json', '*']
+  },
+  node: {
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty'
   },
   module: {
     rules: [{
@@ -28,6 +28,10 @@ module.exports = {
         fallback: 'style-loader',
         use: [ 'css-loader', 'sass-loader' ]
       })
+    }, 
+    {
+      test: /\.node$/,
+      use: 'node-loader'
     }]
   },
   plugins: [
@@ -38,6 +42,25 @@ module.exports = {
     }),
     new ExtractTextPlugin('../stylesheet/style.css'),
     new LiveReloadPlugin({appendScriptTag: true})
-    // new InlineManifestWebpackPlugin({ name: 'webpackManifest' })
+    // new InlineManifestWebpackPlugin{ name: 'webpackManifest' })
   ]
 };
+
+var server = Object.assign({}, config, {
+  entry: './server/index.js',
+  output: {
+    filename: 'serverBundle.js',
+    path: path.resolve(__dirname, 'server')
+  }
+});
+
+var client = Object.assign({}, config,{
+  entry: './client/index.js',
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'public/scripts')
+  }
+});
+
+// Return Array of Configurations
+module.exports = [server, client];

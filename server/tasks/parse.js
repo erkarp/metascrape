@@ -1,4 +1,10 @@
-export default function (text, input, io)
+const request = require('request')
+const cheerio = require('cheerio')
+const debug   = require('debug')
+const find = require('./find')
+const { URL } = require('url')
+
+module.exports = function (text, input, io)
 {
   const url = new URL(input), 
         list = [url.origin + url.pathname],
@@ -55,6 +61,4 @@ export default function (text, input, io)
       }
     }
   });
-
-  console.log('\nLIST:\n', list);
 }

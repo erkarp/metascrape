@@ -15,11 +15,12 @@ let store = createStore(metaScrape,
 );
 
 socket.on('news', function (data) {
+  console.log('news', data);
 	store.dispatch(addIncomingLink(data))
 });
 
 socket.on('count', function (data) {
-	console.log(data);
+	console.log('count', data);
 	store.dispatch(incrementCount(data));
 });
 

@@ -1,6 +1,7 @@
+const request = require('request')
 const findLinks = require('./parse')
 
-export default function (url, io)
+module.exports = function init (url, io)
 {
   var validLinkObjects = [], hrefs = [];
 
@@ -9,6 +10,7 @@ export default function (url, io)
     if (!error)
     {
       hrefs = findLinks(body, url, io); 
+      delete response.body;
     }
 
     else
